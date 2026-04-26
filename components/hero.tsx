@@ -2,93 +2,125 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
-import { HeroMedia } from "@/components/home/hero-media";
+import { ArrowRight, BadgeCheck, MapPin, ShieldCheck, Users } from "lucide-react";
 
-const fade = {
-  initial: { opacity: 0, y: 12 },
+const fade = (delay = 0) => ({
+  initial: { opacity: 0, y: 18 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as const }
-};
+  transition: { duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] as const },
+});
+
+const stats = [
+  { value: "2,400+", label: "Verified profiles" },
+  { value: "8",      label: "Hyderabad areas"  },
+  { value: "4.8★",   label: "Avg. rating"      },
+];
+
+const trust = [
+  { icon: ShieldCheck, label: "100% Verified"    },
+  { icon: BadgeCheck,  label: "Discreet Service" },
+  { icon: Users,       label: "Real Profiles"    },
+];
 
 export function Hero() {
   return (
-    <section className="relative border-b border-gray-100 bg-white pt-24 pb-14 md:pt-28 md:pb-20">
-      <div className="container-shell px-3 md:px-4">
-        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14 xl:gap-16">
-          <div className="order-2 max-w-xl text-center lg:order-1 lg:text-left">
-            <motion.span {...fade} className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-blue-700 ring-1 ring-blue-100">
-              <Sparkles className="h-3.5 w-3.5 text-blue-600" aria-hidden />
-              Hyderabad · verified profiles
-            </motion.span>
+    <section className="relative min-h-[100svh] overflow-hidden bg-[#0a0608]">
 
-            <motion.h1
-              {...fade}
-              transition={{ ...fade.transition, delay: 0.05 }}
-              className="mt-6 text-balance font-semibold tracking-tight text-gray-900 text-[clamp(2rem,4.5vw,3.25rem)] leading-[1.1] md:mt-8"
-            >
-              Find trusted companions in{" "}
-              <span className="text-blue-600">Hyderabad</span>
-            </motion.h1>
+      {/* ambient glows */}
+      <div className="pointer-events-none absolute -left-40 top-1/4 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(255,77,141,0.16),transparent_65%)] blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 right-1/4 h-[400px] w-[400px] rounded-full bg-[radial-gradient(circle,rgba(201,162,77,0.1),transparent_65%)] blur-3xl" />
 
-            <motion.p
-              {...fade}
-              transition={{ ...fade.transition, delay: 0.1 }}
-              className="mx-auto mt-4 max-w-lg text-pretty text-base leading-relaxed text-gray-600 md:mx-0 md:text-lg"
-            >
-              Browse curated profiles by area, compare at a glance, and move forward with confidence — fast on mobile,
-              clear on desktop.
-            </motion.p>
+      <div className="container-shell relative z-10 grid min-h-[100svh] items-center py-28 lg:py-32">
 
-            <motion.div
-              {...fade}
-              transition={{ ...fade.transition, delay: 0.15 }}
-              className="mt-8 flex w-full flex-col gap-3 sm:flex-row sm:justify-center lg:justify-start"
-            >
-              <Link
-                href="/hyderabad"
-                className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 text-base font-semibold text-white shadow-sm transition hover:bg-blue-700 sm:w-auto"
-              >
-                Explore profiles
-                <ArrowRight className="h-4 w-4 shrink-0" aria-hidden />
-              </Link>
-              <Link
-                href="/login"
-                className="inline-flex min-h-[48px] w-full items-center justify-center rounded-xl border border-gray-200 bg-white px-6 text-base font-semibold text-gray-800 shadow-sm transition hover:border-gray-300 hover:bg-gray-50 sm:w-auto"
-              >
-                Member login
-              </Link>
-            </motion.div>
+        {/* ── LEFT: text content ── */}
+        <div className="flex flex-col justify-center">
 
-            <motion.dl
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.25, duration: 0.4 }}
-              className="mt-10 grid gap-6 border-t border-gray-100 pt-8 sm:grid-cols-3"
-            >
-              {[
-                ["Local", "Area-first discovery"],
-                ["Verified", "Quality signals"],
-                ["Responsive", "Built for mobile"]
-              ].map(([k, v]) => (
-                <div key={k} className="text-center sm:text-left">
-                  <dt className="text-xs font-semibold uppercase tracking-wide text-gray-500">{k}</dt>
-                  <dd className="mt-1 text-sm font-medium text-gray-800">{v}</dd>
-                </div>
-              ))}
-            </motion.dl>
-          </div>
+          {/* eyebrow pills */}
+          <motion.div {...fade(0)} className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,77,141,0.45)] bg-[rgba(255,77,141,0.12)] px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[#ffb7d6] backdrop-blur-md">
+              <MapPin className="h-3 w-3 text-[#ff4d8d]" />
+              Hyderabad · Premium Directory
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[0.7rem] font-semibold text-white/60 backdrop-blur-md">
+              <BadgeCheck className="h-3 w-3 text-[#ff4d8d]" />
+              Verified
+            </span>
+          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-            className="order-1 flex justify-center lg:order-2 lg:justify-end"
+          {/* headline */}
+          <motion.h1
+            {...fade(0.08)}
+            className="headline-display mt-7 text-[clamp(2.4rem,5.5vw,4.2rem)] font-semibold leading-[1.04] tracking-[-0.03em] text-white"
           >
-            <HeroMedia />
+            Escort services in{" "}
+            <span className="relative inline-block">
+              <span className="text-gradient-rose">Hyderabad</span>
+              <motion.span
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ delay: 0.55, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute -bottom-1 left-0 h-[2px] w-full origin-left bg-gradient-to-r from-[#ff4d8d] to-transparent"
+              />
+            </span>
+          </motion.h1>
+
+          {/* primary subtext */}
+          <motion.p {...fade(0.14)} className="mt-6 text-[1.05rem] leading-[1.85] text-white/60">
+            Handpicked, verified call girls and escort profiles across Banjara Hills, Jubilee Hills,
+            Hitech City and more — curated for discretion, elegance, and unforgettable evenings.
+          </motion.p>
+
+          {/* secondary paragraph */}
+          <motion.p {...fade(0.18)} className="mt-4 text-[0.95rem] leading-[1.85] text-white/40">
+            Whether you need an independent escort for a private dinner, a travel companion for a weekend
+            trip, or a premium call girl service at your hotel in Hyderabad — our platform connects you
+            with real, verified women who match your taste and budget. Browse by area, category, or price
+            and book with complete confidence.
+          </motion.p>
+
+          {/* trust badges */}
+          <motion.div {...fade(0.22)} className="mt-7 flex flex-wrap gap-3">
+            {trust.map(({ icon: Icon, label }) => (
+              <span key={label} className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.05] px-3.5 py-1.5 text-xs font-medium text-white/55 backdrop-blur-md">
+                <Icon className="h-3.5 w-3.5 text-[#ff4d8d]" />
+                {label}
+              </span>
+            ))}
+          </motion.div>
+
+          {/* CTAs */}
+          <motion.div {...fade(0.26)} className="mt-8 flex flex-wrap gap-3">
+            <Link href="/hyderabad" className="button-hyd-primary inline-flex min-h-[52px] items-center gap-2 px-8 text-base">
+              Explore profiles
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link href="/login" className="inline-flex min-h-[52px] items-center gap-2 rounded-full border border-white/20 bg-white/[0.06] px-8 text-base font-semibold text-white backdrop-blur-md transition hover:border-white/35 hover:bg-white/10">
+              Member login
+            </Link>
+          </motion.div>
+
+          {/* stats */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.38, duration: 0.5 }}
+            className="mt-10 flex flex-wrap gap-8 border-t border-white/10 pt-8"
+          >
+            {stats.map((s) => (
+              <div key={s.label}>
+                <p className="text-2xl font-semibold tracking-tight text-white">{s.value}</p>
+                <p className="mt-0.5 text-xs font-medium uppercase tracking-[0.16em] text-white/40">{s.label}</p>
+              </div>
+            ))}
           </motion.div>
         </div>
+
+
+
       </div>
+
+      {/* bottom fade */}
+      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[var(--background)] to-transparent" />
     </section>
   );
 }

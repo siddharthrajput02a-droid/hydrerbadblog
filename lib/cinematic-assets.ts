@@ -11,14 +11,14 @@ export const cinematicVideos = {
 } as const;
 
 export const cinematicPosters: Record<keyof typeof cinematicVideos, string> = {
-  hero: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1920&q=80",
-  featured: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1920&q=80",
-  elite: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba0?auto=format&fit=crop&w=1920&q=80",
-  cityBanjara: "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?auto=format&fit=crop&w=1920&q=80",
-  cityJubilee: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1920&q=80",
-  cityGachibowli: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1920&q=80",
-  vip: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1920&q=80",
-  cta: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1920&q=80"
+  hero: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=2560&q=100",
+  featured: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=2560&q=100",
+  elite: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba0?auto=format&fit=crop&w=2560&q=100",
+  cityBanjara: "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?auto=format&fit=crop&w=2560&q=100",
+  cityJubilee: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=2560&q=100",
+  cityGachibowli: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=2560&q=100",
+  vip: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=2560&q=100",
+  cta: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=2560&q=100"
 };
 
 export type CinematicSectionKey = keyof typeof cinematicVideos;
