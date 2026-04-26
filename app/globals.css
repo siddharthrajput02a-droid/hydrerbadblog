@@ -1,0 +1,442 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-display: var(--font-playfair), ui-serif, Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --color-canvas: #050506;
+  --color-blush: #120a10;
+  --color-accent: #c9a24d;
+  --color-lavender: #7c3a6e;
+  --color-ink: #e8e0e4;
+  --color-ink-muted: #9a8f96;
+}
+
+:root {
+  --background: #030304;
+  --background-secondary: #0c0a0d;
+  --foreground: #f4eef1;
+  --muted: #9a8f96;
+  --muted-deep: #6b5f66;
+  --card: rgba(18, 14, 20, 0.55);
+  --border: rgba(212, 175, 55, 0.18);
+  --accent: #c9a24d;
+  --accent-bright: #e8d5a3;
+  --wine: #5c1a2e;
+  --wine-deep: #2a0a14;
+  --highlight: #ec4899;
+  --accent-soft: rgba(201, 162, 77, 0.12);
+  --glass: rgba(12, 10, 14, 0.45);
+  --shadow-soft: 0 24px 80px rgba(0, 0, 0, 0.55);
+  --shadow-lift: 0 32px 100px rgba(92, 26, 46, 0.35);
+  --gold-glow: 0 0 60px rgba(212, 175, 55, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+main {
+  position: relative;
+}
+
+/* Subtle vignette — luxury club depth */
+main::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  box-shadow: inset 0 0 120px rgba(42, 21, 32, 0.08);
+}
+
+.container-shell {
+  width: min(1320px, calc(100% - 1.5rem));
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  .container-shell {
+    width: min(1320px, calc(100% - 2rem));
+  }
+}
+
+@media (min-width: 1536px) {
+  .container-shell {
+    width: min(1400px, calc(100% - 2.5rem));
+  }
+}
+
+/* --- Luxury surfaces --- */
+.glass-panel {
+  background: linear-gradient(155deg, rgba(22, 18, 26, 0.72), rgba(10, 8, 12, 0.55));
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: var(--shadow-soft), var(--gold-glow);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+}
+
+.surface-outline {
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(180deg, rgba(28, 22, 30, 0.85), rgba(12, 10, 14, 0.65));
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+}
+
+.luxury-glass {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 24px 80px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(26px);
+  -webkit-backdrop-filter: blur(26px);
+}
+
+.text-gradient {
+  background: linear-gradient(115deg, #f0e6d2 0%, #c9a24d 38%, #ec4899 72%, #c9a24d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-subtle {
+  background: linear-gradient(90deg, rgba(244, 238, 241, 0.95), rgba(201, 162, 77, 0.95));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.section-spacing {
+  padding: clamp(4.5rem, 8vw, 7rem) 0;
+}
+
+@media (min-width: 768px) {
+  .section-spacing {
+    padding: clamp(5.5rem, 9vw, 8.5rem) 0;
+  }
+}
+
+.grid-shell {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 999px;
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  background: linear-gradient(90deg, rgba(22, 18, 26, 0.9), rgba(40, 28, 36, 0.55));
+  padding: 0.5rem 1rem;
+  color: rgba(232, 213, 163, 0.85);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.section-title {
+  font-family: var(--font-playfair), ui-serif, Georgia, serif;
+  font-size: clamp(2rem, 3.2vw, 3.5rem);
+  line-height: 1.08;
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+
+.section-copy {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.85;
+}
+
+.headline-display {
+  font-family: var(--font-playfair), ui-serif, Georgia, serif;
+  letter-spacing: -0.03em;
+}
+
+.home-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.section-eyebrow-line {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.section-eyebrow-line::after {
+  content: "";
+  flex: 1;
+  max-width: 6rem;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(201, 162, 77, 0.45), rgba(236, 72, 153, 0.2), transparent);
+}
+
+.input-surface {
+  width: 100%;
+  border-radius: 1rem;
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  background: rgba(12, 10, 14, 0.65);
+  padding: 0.95rem 1rem;
+  color: var(--foreground);
+  outline: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.input-surface::placeholder {
+  color: var(--muted-deep);
+}
+
+.input-surface:focus {
+  border-color: rgba(236, 72, 153, 0.45);
+  box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
+}
+
+.button-primary {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.95rem 1.45rem;
+  background: linear-gradient(120deg, #b8923f 0%, #c9a24d 35%, #8b6914 100%);
+  background-size: 200% 200%;
+  color: #0a0908;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 14px 44px rgba(201, 162, 77, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+  animation: gold-shimmer 5s ease-in-out infinite;
+}
+
+.button-secondary {
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 999px;
+  padding: 0.95rem 1.45rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  color: var(--foreground);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
+}
+
+.button-secondary:hover,
+.button-primary:hover {
+  transform: translateY(-2px);
+}
+
+.button-primary,
+.button-secondary {
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 280ms ease, filter 280ms ease;
+}
+
+.button-primary:hover {
+  filter: brightness(1.06);
+  box-shadow: 0 20px 56px rgba(201, 162, 77, 0.35);
+}
+
+@keyframes gold-shimmer {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.nav-link {
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #c9a24d, #ec4899, transparent);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* Luxury card shimmer */
+@keyframes shimmer-sweep {
+  0% {
+    transform: translateX(-120%) skewX(-12deg);
+  }
+  100% {
+    transform: translateX(220%) skewX(-12deg);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer-sweep 2.8s ease-in-out infinite;
+}
+
+/* Infinite horizontal rail */
+@keyframes rail-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.rail-infinite {
+  animation: rail-scroll 42s linear infinite;
+}
+
+@media (min-width: 768px) {
+  .md-rail-infinite {
+    animation: rail-scroll 42s linear infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail-infinite,
+  .md-rail-infinite {
+    animation: none;
+  }
+  .animate-shimmer {
+    animation: none;
+  }
+  .button-primary {
+    animation: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-spacing {
+    padding: clamp(3.5rem, 10vw, 5rem) 0;
+  }
+}
+
+/* --- Hyderabad pink home: floating hearts (CSS-only) --- */
+@keyframes hyd-heart-rise {
+  0% {
+    transform: translate3d(var(--heart-x0, 0px), 105%, 0) rotate(var(--heart-rot, 0deg));
+    opacity: 0;
+  }
+  12% {
+    opacity: var(--heart-op, 0.35);
+  }
+  88% {
+    opacity: var(--heart-op, 0.35);
+  }
+  100% {
+    transform: translate3d(var(--heart-x1, 0px), -25%, 0) rotate(calc(var(--heart-rot, 0deg) + 10deg));
+    opacity: 0;
+  }
+}
+
+.floating-heart {
+  position: absolute;
+  bottom: -12%;
+  width: var(--heart-size, 18px);
+  height: var(--heart-size, 18px);
+  animation-name: hyd-heart-rise;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating-heart {
+    animation: none !important;
+    transform: translate3d(0, 40%, 0);
+    opacity: 0.12;
+  }
+}
+
+.button-hyd-primary {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.95rem 1.45rem;
+  background: linear-gradient(120deg, #ff4d8d 0%, #ff6fb0 45%, #e63b7a 100%);
+  background-size: 200% 200%;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 14px 44px rgba(255, 77, 141, 0.32), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 280ms ease, filter 280ms ease;
+}
+
+.button-hyd-primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.04);
+  box-shadow: 0 20px 56px rgba(255, 77, 141, 0.42);
+}
+
+.button-hyd-secondary {
+  border: 1px solid rgba(255, 77, 141, 0.45);
+  border-radius: 999px;
+  padding: 0.95rem 1.45rem;
+  background: rgba(255, 255, 255, 0.72);
+  color: #8b2252;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 12px 40px rgba(255, 77, 141, 0.12);
+  backdrop-filter: blur(10px);
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 280ms ease, border-color 280ms ease;
+}
+
+.button-hyd-secondary:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 77, 141, 0.75);
+  box-shadow: 0 16px 48px rgba(255, 77, 141, 0.18);
+}
+
+.text-gradient-rose {
+  background: linear-gradient(115deg, #ff4d8d 0%, #ff8fb8 40%, #c9185a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hyd-fade-in {
+  animation: hyd-fade-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes hyd-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hyd-fade-in {
+    animation: none;
+  }
+}
