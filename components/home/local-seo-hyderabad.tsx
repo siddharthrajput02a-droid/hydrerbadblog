@@ -14,7 +14,7 @@ const AREAS = [
 
 export function LocalSeoHyderabad() {
   return (
-    <section className="border-t border-white/[0.06] py-16">
+    <section className="border-t border-white/[0.06] bg-[#0a0608] py-16">
       <div className="container-shell space-y-14">
 
         {/* SEO content block */}
