@@ -32,7 +32,7 @@ export function HomeAreasAndCategories({ categories }: Props) {
   return (
     <section
       data-cinematic="featured"
-      className="section-spacing relative overflow-hidden border-t border-white/[0.06] py-10"
+      className="section-spacing relative overflow-hidden border-t border-white/[0.06] bg-[#0a0608] py-10"
     >
       {/* ambient glows matching hero */}
       <div className="pointer-events-none absolute -left-32 top-1/3 h-[400px] w-[400px] rounded-full bg-[radial-gradient(circle,rgba(255,77,141,0.12),transparent_65%)] blur-3xl" />
