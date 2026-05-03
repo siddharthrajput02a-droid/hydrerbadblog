@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, BadgeCheck, MapPin, ShieldCheck, Users } from "lucide-react";
@@ -25,6 +26,20 @@ const trust = [
 export function Hero() {
   return (
     <section className="relative min-h-[100svh] overflow-hidden bg-[#0a0608]">
+
+      {/* background image */}
+      <Image
+        src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=1800&q=85&auto=format&fit=crop"
+        alt=""
+        fill
+        priority
+        className="object-cover object-top"
+        sizes="100vw"
+      />
+
+      {/* dark overlay so text stays readable */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/30" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30" />
 
       {/* ambient glows */}
       <div className="pointer-events-none absolute -left-40 top-1/4 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(255,77,141,0.16),transparent_65%)] blur-3xl" />
