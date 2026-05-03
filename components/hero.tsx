@@ -25,7 +25,7 @@ const trust = [
 
 export function Hero() {
   return (
-    <section className="relative min-h-[100svh] overflow-hidden bg-[#0a0608]">
+    <section className="relative z-[1] min-h-[100svh] overflow-hidden bg-[#0a0608]">
 
       {/* background image */}
       <Image
@@ -33,17 +33,17 @@ export function Hero() {
         alt=""
         fill
         priority
-        className="object-cover object-top"
+        className="z-0 object-cover object-top"
         sizes="100vw"
       />
 
       {/* dark overlay so text stays readable */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/30" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30" />
+      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-black/85 via-black/60 to-black/30" />
+      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-black/70 via-transparent to-black/30" />
 
       {/* ambient glows */}
-      <div className="pointer-events-none absolute -left-40 top-1/4 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(255,77,141,0.16),transparent_65%)] blur-3xl" />
-      <div className="pointer-events-none absolute bottom-0 right-1/4 h-[400px] w-[400px] rounded-full bg-[radial-gradient(circle,rgba(201,162,77,0.1),transparent_65%)] blur-3xl" />
+      <div className="pointer-events-none absolute -left-40 top-1/4 z-[1] h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(255,77,141,0.16),transparent_65%)] blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 right-1/4 z-[1] h-[400px] w-[400px] rounded-full bg-[radial-gradient(circle,rgba(201,162,77,0.1),transparent_65%)] blur-3xl" />
 
       <div className="container-shell relative z-10 grid min-h-[100svh] items-center py-28 lg:py-32">
 
