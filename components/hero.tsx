@@ -31,7 +31,7 @@ export function Hero() {
       style={{
         backgroundImage: `url('${BG_IMAGE}')`,
         backgroundSize: "cover",
-        backgroundPosition: "center 20%",
+        backgroundPosition: "right 20%",
         backgroundRepeat: "no-repeat",
       }}
     >
