@@ -22,22 +22,29 @@ const trust = [
   { icon: Users,       label: "Real Profiles"    },
 ];
 
-const BG_IMAGE = "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1920&q=90&auto=format&fit=crop&crop=top";
+const GIRL_IMAGE = "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1200&q=90&auto=format&fit=crop&crop=top";
 
 export function Hero() {
   return (
-    <section
-      className="relative z-[1] min-h-[100svh] overflow-hidden"
-      style={{
-        backgroundImage: `url('${BG_IMAGE}')`,
-        backgroundSize: "150%",
-        backgroundPosition: "right 20%",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-      {/* dark overlay — keeps text readable */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/20" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/25" />
+    <section className="relative z-[1] min-h-[100svh] overflow-hidden bg-[#0a0608]">
+
+      {/* ── Girl image pinned to RIGHT half ── */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={GIRL_IMAGE}
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute right-0 top-0 h-full w-1/2 object-cover object-top"
+      />
+
+      {/* fade the image into the dark bg on the left edge */}
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/2 bg-gradient-to-r from-[#0a0608] via-[#0a0608]/30 to-transparent" />
+      {/* top + bottom fades */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#0a0608]/60 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#0a0608] to-transparent" />
+
+      {/* full dark overlay on left side for text readability */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-[#0a0608] via-[#0a0608]/95 to-transparent" />
 
       {/* ambient glows */}
       <div className="pointer-events-none absolute -left-40 top-1/4 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(255,77,141,0.18),transparent_65%)] blur-3xl" />
@@ -45,8 +52,8 @@ export function Hero() {
 
       <div className="container-shell relative z-10 grid min-h-[100svh] items-center py-28 lg:py-32">
 
-        {/* text content */}
-        <div className="flex flex-col justify-center">
+        {/* text content — left half only */}
+        <div className="flex max-w-xl flex-col justify-center">
 
           {/* eyebrow pills */}
           <motion.div {...fade(0)} className="flex flex-wrap items-center gap-2">
