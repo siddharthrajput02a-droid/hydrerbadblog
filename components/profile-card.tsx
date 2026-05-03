@@ -149,7 +149,7 @@ function ProfileCardRose({ profile }: { profile: Profile }) {
           <span className="inline-flex min-w-0 items-center gap-1.5 font-medium text-[#4a3540]">
             <MapPin className="h-3.5 w-3.5 shrink-0 text-[#ff4d8d]" aria-hidden />
             <span className="truncate">
-              {profile.area}, {profile.city}
+              {profile.area}, Hyderabad
             </span>
           </span>
         </p>
