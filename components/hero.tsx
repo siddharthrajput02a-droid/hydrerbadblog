@@ -30,7 +30,7 @@ export function Hero() {
       className="relative z-[1] min-h-[100svh] overflow-hidden"
       style={{
         backgroundImage: `url('${BG_IMAGE}')`,
-        backgroundSize: "cover",
+        backgroundSize: "150%",
         backgroundPosition: "right 20%",
         backgroundRepeat: "no-repeat",
       }}
