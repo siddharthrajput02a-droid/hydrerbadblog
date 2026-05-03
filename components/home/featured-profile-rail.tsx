@@ -75,7 +75,7 @@ function LuxuryCarouselCard({ profile, tone }: { profile: Profile; tone: RailTon
             <div>
               <p className="headline-display text-xl font-semibold tracking-tight text-white drop-shadow-sm">{profile.name}</p>
               <p className="mt-1 text-xs font-medium uppercase tracking-[0.18em] text-white/80">
-                {profile.area} · {profile.city}
+                {profile.area}
               </p>
             </div>
             <span
