@@ -8,7 +8,7 @@ export function HomeCta() {
   return (
     <section
       data-cinematic="cta"
-      className="section-spacing relative overflow-hidden border-t border-white/[0.06] py-16"
+      className="section-spacing relative overflow-hidden border-t border-white/[0.06] bg-[#0a0608] py-16"
     >
       {/* ambient glows */}
       <div className="pointer-events-none absolute -left-32 top-1/3 h-[400px] w-[400px] rounded-full bg-[radial-gradient(circle,rgba(255,77,141,0.12),transparent_65%)] blur-3xl" />
