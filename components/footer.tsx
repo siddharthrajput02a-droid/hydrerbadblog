@@ -14,7 +14,7 @@ export function Footer() {
     <footer className="relative border-t border-white/[0.06] bg-[#0a0608]">
 
       {/* ambient glow */}
-      <div className="pointer-events-none absolute -left-40 top-0 h-[300px] w-[300px] rounded-full bg-[radial-gradient(circle,rgba(255,77,141,0.08),transparent_65%)] blur-3xl" />
+      {/* <div className="pointer-events-none absolute -left-40 top-0 h-[300px] w-[300px] rounded-full bg-[radial-gradient(circle,rgba(255,77,141,0.08),transparent_65%)] blur-3xl" /> */}
 
       <div className="container-shell relative z-10 py-10">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-[2fr,1fr,1fr,1fr]">

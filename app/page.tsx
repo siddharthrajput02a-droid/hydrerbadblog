@@ -45,7 +45,7 @@ export default async function HomePage() {
   return (
     <HomeHyderabadShell>
       <Hero />
-      <HomeSearchBar />
+      {/* <HomeSearchBar /> */}
       <HomeFeaturedGrid profiles={featuredProfiles} />
       <HomeAreasAndCategories categories={categories} cities={cities} />
       <HomeCta />
