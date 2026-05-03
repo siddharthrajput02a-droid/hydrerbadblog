@@ -17,15 +17,15 @@ export function HomeFeaturedGrid({ profiles }: { profiles: Profile[] }) {
   return (
     <section
       data-cinematic="featured"
-      className="section-spacing relative overflow-hidden border-t border-[#ffd6e8]/80 py-8"
+      className="section-spacing relative overflow-hidden border-t border-white/10 bg-[#0a0608] py-8"
     >
       <div className="container-shell relative z-[1]">
         <motion.div {...fadeUp} className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="inline-flex items-center gap-2 rounded-full border border-[#ffc4dc] bg-white/80 px-4 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[#b0306a]">
+            <p className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,77,141,0.45)] bg-[rgba(255,77,141,0.12)] px-4 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[#ffb7d6]">
               Featured profiles
             </p>
-            <h2 className="headline-display mt-5 text-[clamp(1.9rem,3.8vw,3rem)] font-semibold leading-[1.06] tracking-[-0.02em] text-[#2a1520]">
+            <h2 className="headline-display mt-5 text-[clamp(1.9rem,3.8vw,3rem)] font-semibold leading-[1.06] tracking-[-0.02em] text-white">
               Hyderabad&apos;s finest — <span className="text-gradient-rose">verified &amp; available</span>
             </h2>
           </div>
