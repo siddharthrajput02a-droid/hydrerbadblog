@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, BadgeCheck, MapPin, ShieldCheck, Users } from "lucide-react";
@@ -23,31 +22,30 @@ const trust = [
   { icon: Users,       label: "Real Profiles"    },
 ];
 
+const BG_IMAGE = "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=1800&q=90&auto=format&fit=crop";
+
 export function Hero() {
   return (
-    <section className="relative z-[1] min-h-[100svh] overflow-hidden bg-[#0a0608]">
-
-      {/* background image */}
-      <Image
-        src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=1800&q=85&auto=format&fit=crop"
-        alt=""
-        fill
-        priority
-        className="z-0 object-cover object-top"
-        sizes="100vw"
-      />
-
-      {/* dark overlay so text stays readable */}
-      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-black/85 via-black/60 to-black/30" />
-      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-black/70 via-transparent to-black/30" />
+    <section
+      className="relative z-[1] min-h-[100svh] overflow-hidden"
+      style={{
+        backgroundImage: `url('${BG_IMAGE}')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center top",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      {/* dark overlay — keeps text readable */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/20" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/25" />
 
       {/* ambient glows */}
-      <div className="pointer-events-none absolute -left-40 top-1/4 z-[1] h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(255,77,141,0.16),transparent_65%)] blur-3xl" />
-      <div className="pointer-events-none absolute bottom-0 right-1/4 z-[1] h-[400px] w-[400px] rounded-full bg-[radial-gradient(circle,rgba(201,162,77,0.1),transparent_65%)] blur-3xl" />
+      <div className="pointer-events-none absolute -left-40 top-1/4 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(255,77,141,0.18),transparent_65%)] blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 right-1/4 h-[400px] w-[400px] rounded-full bg-[radial-gradient(circle,rgba(201,162,77,0.1),transparent_65%)] blur-3xl" />
 
       <div className="container-shell relative z-10 grid min-h-[100svh] items-center py-28 lg:py-32">
 
-        {/* ── LEFT: text content ── */}
+        {/* text content */}
         <div className="flex flex-col justify-center">
 
           {/* eyebrow pills */}
@@ -130,12 +128,10 @@ export function Hero() {
           </motion.div>
         </div>
 
-
-
       </div>
 
-      {/* bottom fade */}
-      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[var(--background)] to-transparent" />
+      {/* bottom fade into next section */}
+      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#0a0608] to-transparent" />
     </section>
   );
 }
