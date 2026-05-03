@@ -52,7 +52,7 @@ export function HomeCinematicShell({ children }: { children: React.ReactNode }) 
       <CinematicBackground active={active} />
       <FilmGrain />
       <LightParticles />
-      <div className="relative z-10 pb-28 md:pb-12">{children}</div>
+      <div className="relative z-10">{children}</div>
     </div>
   );
 }
