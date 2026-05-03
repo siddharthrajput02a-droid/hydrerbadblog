@@ -22,7 +22,7 @@ const trust = [
   { icon: Users,       label: "Real Profiles"    },
 ];
 
-const BG_IMAGE = "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=1800&q=90&auto=format&fit=crop";
+const BG_IMAGE = "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=1800&q=90&auto=format&fit=crop&crop=top";
 
 export function Hero() {
   return (
@@ -31,7 +31,7 @@ export function Hero() {
       style={{
         backgroundImage: `url('${BG_IMAGE}')`,
         backgroundSize: "cover",
-        backgroundPosition: "center 10%",
+        backgroundPosition: "center -10%",
         backgroundRepeat: "no-repeat",
       }}
     >
