@@ -1,8 +1,19 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, BadgeCheck, MapPin, ShieldCheck, Users } from "lucide-react";
+import {
+  ArrowRight,
+  BadgeCheck,
+  CalendarCheck,
+  MapPin,
+  MessageCircle,
+  Phone,
+  ShieldCheck,
+  Sparkles,
+  Users,
+} from "lucide-react";
 
 const fade = (delay = 0) => ({
   initial: { opacity: 0, y: 18 },
@@ -11,134 +22,143 @@ const fade = (delay = 0) => ({
 });
 
 const stats = [
-  { value: "2,400+", label: "Verified profiles" },
-  { value: "8",      label: "Hyderabad areas"  },
-  { value: "4.8★",   label: "Avg. rating"      },
+  { value: "2,400+", label: "Profiles" },
+  { value: "24/7", label: "Call support" },
+  { value: "8", label: "City areas" },
 ];
 
 const trust = [
-  { icon: ShieldCheck, label: "100% Verified"    },
-  { icon: BadgeCheck,  label: "Discreet Service" },
-  { icon: Users,       label: "Real Profiles"    },
+  { icon: ShieldCheck, label: "18+ verified" },
+  { icon: BadgeCheck, label: "Private booking" },
+  { icon: Users, label: "Real profiles" },
 ];
 
-const GIRL_IMAGE = "https://unsplash.com/photos/woman-in-red-and-black-lingerie-kneeling-on-bed-V3QbdW9pZeo";
+const bookingSteps = [
+  { icon: Phone, label: "Call", value: "Quick connect" },
+  { icon: MessageCircle, label: "Chat", value: "Confirm details" },
+  { icon: CalendarCheck, label: "Book", value: "Private schedule" },
+];
+
+const HERO_IMAGE =
+  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=2400&q=90";
+
+const CALL_NUMBER = "+910000000000";
 
 export function Hero() {
   return (
-    <section className="relative z-[1] min-h-[100svh] overflow-hidden bg-[#0a0608]">
-
-      {/* ── Girl image pinned to RIGHT half ── */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={GIRL_IMAGE}
+    <section
+      data-cinematic="hero"
+      className="relative z-[1] min-h-[calc(100svh-76px)] overflow-hidden bg-[#090507]"
+    >
+      <Image
+        src={HERO_IMAGE}
         alt=""
         aria-hidden
-        className="pointer-events-none absolute right-0 top-0 h-full w-1/2 object-cover object-top"
+        fill
+        priority
+        sizes="100vw"
+        className="pointer-events-none object-cover object-[63%_top] opacity-80"
       />
 
-      {/* fade the image into the dark bg on the left edge */}
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/2 bg-gradient-to-r from-[#0a0608] via-[#0a0608]/30 to-transparent" />
-      {/* top + bottom fades */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#0a0608]/60 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#0a0608] to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#090507_0%,rgba(9,5,7,0.93)_27%,rgba(9,5,7,0.58)_56%,rgba(9,5,7,0.2)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(9,5,7,0.7)_0%,rgba(9,5,7,0.04)_36%,#090507_100%)]" />
 
-      {/* full dark overlay on left side for text readability */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-[#0a0608] via-[#0a0608]/95 to-transparent" />
-
-      {/* ambient glows */}
-      <div className="pointer-events-none absolute -left-40 top-1/4 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(255,77,141,0.18),transparent_65%)] blur-3xl" />
-      <div className="pointer-events-none absolute bottom-0 right-1/4 h-[400px] w-[400px] rounded-full bg-[radial-gradient(circle,rgba(201,162,77,0.1),transparent_65%)] blur-3xl" />
-
-      <div className="container-shell relative z-10 grid min-h-[100svh] items-center py-28 lg:py-32">
-
-        {/* text content — left half only */}
-        <div className="flex max-w-xl flex-col justify-center">
-
-          {/* eyebrow pills */}
+      <div className="container-shell relative z-10 grid min-h-[calc(100svh-76px)] items-center py-20 sm:py-24 lg:py-28">
+        <div className="flex max-w-2xl flex-col justify-center">
           <motion.div {...fade(0)} className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,77,141,0.45)] bg-[rgba(255,77,141,0.12)] px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[#ffb7d6] backdrop-blur-md">
               <MapPin className="h-3 w-3 text-[#ff4d8d]" />
-              Hyderabad · Premium Directory
+              Hyderabad premium booking
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[0.7rem] font-semibold text-white/60 backdrop-blur-md">
-              <BadgeCheck className="h-3 w-3 text-[#ff4d8d]" />
-              Verified
+              <Sparkles className="h-3 w-3 text-[#ff4d8d]" />
+              Simple and discreet
             </span>
           </motion.div>
 
-          {/* headline */}
           <motion.h1
             {...fade(0.08)}
-            className="headline-display mt-7 text-[clamp(2.4rem,5.5vw,4.2rem)] font-semibold leading-[1.04] tracking-[-0.03em] text-white"
+            className="headline-display mt-7 max-w-[12ch] text-[clamp(2.45rem,7vw,5.8rem)] font-semibold leading-[0.98] tracking-[-0.03em] text-white"
           >
-            Escort services in{" "}
-            <span className="relative inline-block">
-              <span className="text-gradient-rose">Hyderabad</span>
-              <motion.span
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ delay: 0.55, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute -bottom-1 left-0 h-[2px] w-full origin-left bg-gradient-to-r from-[#ff4d8d] to-transparent"
-              />
-            </span>
+            Call escorts in <span className="text-gradient-rose">Hyderabad</span>
           </motion.h1>
 
-          {/* primary subtext */}
-          <motion.p {...fade(0.14)} className="mt-6 text-[1.05rem] leading-[1.85] text-white/60">
-            Handpicked, verified call girls and escort profiles across Banjara Hills, Jubilee Hills,
-            Hitech City and more — curated for discretion, elegance, and unforgettable evenings.
+          <motion.p
+            {...fade(0.14)}
+            className="mt-6 max-w-xl text-[1.02rem] leading-[1.8] text-white/68 sm:text-[1.08rem]"
+          >
+            Browse verified companion profiles, choose your area, and book privately by call or chat.
+            A clean Hyderabad directory for adults who want fast, discreet plans.
           </motion.p>
 
-          {/* secondary paragraph */}
-          <motion.p {...fade(0.18)} className="mt-4 text-[0.95rem] leading-[1.85] text-white/40">
-            Whether you need an independent escort for a private dinner, a travel companion for a weekend
-            trip, or a premium call girl service at your hotel in Hyderabad — our platform connects you
-            with real, verified women who match your taste and budget. Browse by area, category, or price
-            and book with complete confidence.
-          </motion.p>
-
-          {/* trust badges */}
-          <motion.div {...fade(0.22)} className="mt-7 flex flex-wrap gap-3">
+          <motion.div {...fade(0.18)} className="mt-7 flex flex-wrap gap-3">
             {trust.map(({ icon: Icon, label }) => (
-              <span key={label} className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.05] px-3.5 py-1.5 text-xs font-medium text-white/55 backdrop-blur-md">
+              <span
+                key={label}
+                className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.06] px-3.5 py-1.5 text-xs font-medium text-white/68 backdrop-blur-md"
+              >
                 <Icon className="h-3.5 w-3.5 text-[#ff4d8d]" />
                 {label}
               </span>
             ))}
           </motion.div>
 
-          {/* CTAs */}
-          <motion.div {...fade(0.26)} className="mt-8 flex flex-wrap gap-3">
-            <Link href="/hyderabad" className="button-hyd-primary inline-flex min-h-[52px] items-center gap-2 px-8 text-base">
-              Explore profiles
-              <ArrowRight className="h-4 w-4" />
+          <motion.div {...fade(0.24)} className="mt-9 flex flex-wrap gap-3">
+            <Link
+              href={`tel:${CALL_NUMBER}`}
+              className="button-hyd-primary inline-flex min-h-[52px] items-center gap-2 px-8 text-base"
+            >
+              <Phone className="h-4 w-4" />
+              Call now
             </Link>
-            <Link href="/login" className="inline-flex min-h-[52px] items-center gap-2 rounded-full border border-white/20 bg-white/[0.06] px-8 text-base font-semibold text-white backdrop-blur-md transition hover:border-white/35 hover:bg-white/10">
-              Member login
+            <Link
+              href="/hyderabad"
+              className="inline-flex min-h-[52px] items-center gap-2 rounded-full border border-white/20 bg-white/[0.07] px-8 text-base font-semibold text-white backdrop-blur-md transition hover:border-white/35 hover:bg-white/10"
+            >
+              Book profiles
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </motion.div>
 
-          {/* stats */}
+          <motion.div
+            {...fade(0.3)}
+            className="mt-9 grid max-w-2xl gap-2 rounded-[1.25rem] border border-white/10 bg-[#12080e]/75 p-2 shadow-[0_24px_70px_rgba(0,0,0,0.32)] backdrop-blur-xl sm:grid-cols-3"
+          >
+            {bookingSteps.map(({ icon: Icon, label, value }) => (
+              <div
+                key={label}
+                className="flex min-h-[72px] items-center gap-3 rounded-2xl bg-white/[0.045] px-4 py-3"
+              >
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#ff4d8d]/15 text-[#ff8fbd]">
+                  <Icon className="h-4 w-4" />
+                </span>
+                <span>
+                  <span className="block text-sm font-semibold text-white">{label}</span>
+                  <span className="block text-xs text-white/48">{value}</span>
+                </span>
+              </div>
+            ))}
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.38, duration: 0.5 }}
-            className="mt-10 flex flex-wrap gap-8 border-t border-white/10 pt-8"
+            transition={{ delay: 0.42, duration: 0.5 }}
+            className="mt-8 flex flex-wrap gap-7 border-t border-white/10 pt-7"
           >
             {stats.map((s) => (
               <div key={s.label}>
                 <p className="text-2xl font-semibold tracking-tight text-white">{s.value}</p>
-                <p className="mt-0.5 text-xs font-medium uppercase tracking-[0.16em] text-white/40">{s.label}</p>
+                <p className="mt-0.5 text-xs font-medium uppercase tracking-[0.16em] text-white/40">
+                  {s.label}
+                </p>
               </div>
             ))}
           </motion.div>
         </div>
-
       </div>
 
-      {/* bottom fade into next section */}
-      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#0a0608] to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#0a0608] to-transparent" />
     </section>
   );
 }
