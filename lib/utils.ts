@@ -27,6 +27,10 @@ export function getProfileBySlug(slug: string): Profile | undefined {
   return profiles.find((profile) => profile.slug === slug);
 }
 
+export function getProfileBySlugOrId(slugOrId: string): Profile | undefined {
+  return profiles.find((profile) => profile.slug === slugOrId || profile.id === slugOrId);
+}
+
 export function currency(amount: number) {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",

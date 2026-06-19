@@ -22,7 +22,7 @@ const trust = [
   { icon: Users,       label: "Real Profiles"    },
 ];
 
-const GIRL_IMAGE = "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1200&q=90&auto=format&fit=crop&crop=top";
+const GIRL_IMAGE = "https://unsplash.com/photos/woman-in-red-and-black-lingerie-kneeling-on-bed-V3QbdW9pZeo";
 
 export function Hero() {
   return (

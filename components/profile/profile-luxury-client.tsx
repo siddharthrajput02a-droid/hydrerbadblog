@@ -6,14 +6,16 @@ import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion"
 import {
   ArrowLeft,
   CalendarClock,
+  CheckCircle2,
   ChevronLeft,
   ChevronRight,
+  Clock,
   MessageCircle,
   Sparkles,
   Star,
   X
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { type FormEvent, useMemo, useState } from "react";
 import { MagneticWrap } from "@/components/magnetic-wrap";
 import type { Profile } from "@/lib/types";
 import { currency } from "@/lib/utils";
@@ -31,8 +33,28 @@ export function ProfileLuxuryClient({ profile }: { profile: Profile }) {
   const heroScale = useTransform(scrollY, [0, 500], [1, 1.08]);
   const panelOpacity = useTransform(scrollY, [0, 200], [1, 0.92]);
 
-  const gallery = useMemo(() => [profile.image, ...profile.images], [profile]);
+  const gallery = useMemo(() => Array.from(new Set([profile.image, ...profile.images])), [profile]);
   const [lightbox, setLightbox] = useState<number | null>(null);
+  const [bookingOpen, setBookingOpen] = useState(false);
+  const [bookingSent, setBookingSent] = useState(false);
+  const [bookingForm, setBookingForm] = useState({
+    name: "",
+    contact: "",
+    date: "",
+    time: "Evening",
+    plan: profile.category,
+    notes: ""
+  });
+
+  function openBooking() {
+    setBookingOpen(true);
+    setBookingSent(false);
+  }
+
+  function submitBooking(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setBookingSent(true);
+  }
 
   const reviews = [
     { who: "Verified member", quote: "Poised, punctual, and effortlessly warm — the room leaned in when she spoke.", stars: 5 },
@@ -222,7 +244,7 @@ export function ProfileLuxuryClient({ profile }: { profile: Profile }) {
             Close the distance — book through concierge or return to the lounge to keep browsing.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <button type="button" className="button-primary min-w-[12rem] px-10 py-3">
+            <button type="button" className="button-primary min-w-[12rem] px-10 py-3" onClick={openBooking}>
               Book privately
             </button>
             <Link href="/hyderabad" className="button-secondary min-w-[12rem] px-10 py-3 text-center">
@@ -244,11 +266,11 @@ export function ProfileLuxuryClient({ profile }: { profile: Profile }) {
             <p className="mt-2 text-sm text-[var(--muted)]">Starting rate · bespoke itineraries on request</p>
             <div className="mt-6 flex flex-col gap-2.5">
               <MagneticWrap className="block">
-                <button type="button" className="button-primary w-full py-3 text-sm">
+                <button type="button" className="button-primary w-full py-3 text-sm" onClick={openBooking}>
                   Request evening
                 </button>
               </MagneticWrap>
-              <button type="button" className="button-secondary w-full py-3 text-sm">
+              <button type="button" className="button-secondary w-full py-3 text-sm" onClick={openBooking}>
                 <span className="inline-flex items-center justify-center gap-2">
                   <MessageCircle className="h-4 w-4" />
                   Concierge message
@@ -313,6 +335,181 @@ export function ProfileLuxuryClient({ profile }: { profile: Profile }) {
         ) : null}
       </AnimatePresence>
 
+      <AnimatePresence>
+        {bookingOpen ? (
+          <motion.div
+            className="fixed inset-0 z-[130] flex items-center justify-center bg-black/78 p-4 backdrop-blur-xl"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setBookingOpen(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 22, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 12, scale: 0.98 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full max-w-2xl overflow-hidden rounded-[1.75rem] border border-[rgba(212,175,55,0.26)] bg-[linear-gradient(155deg,rgba(18,14,22,0.96),rgba(8,6,10,0.96))] shadow-[0_40px_120px_rgba(0,0,0,0.72)]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-start justify-between gap-5 border-b border-white/[0.08] px-5 py-5 md:px-7">
+                <div>
+                  <p className="inline-flex items-center gap-2 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[var(--accent-bright)]">
+                    <CalendarClock className="h-3.5 w-3.5" />
+                    Private request
+                  </p>
+                  <h2 className="headline-display mt-3 text-2xl font-semibold text-[var(--foreground)] md:text-3xl">
+                    Request {profile.name}
+                  </h2>
+                  <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+                    Share the timing and contact details. The final schedule can be confirmed by concierge.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-[var(--muted)] transition hover:border-[rgba(212,175,55,0.35)] hover:text-[var(--foreground)]"
+                  aria-label="Close request"
+                  onClick={() => setBookingOpen(false)}
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              {bookingSent ? (
+                <div className="px-5 py-7 md:px-7">
+                  <div className="rounded-[1.35rem] border border-[rgba(212,175,55,0.22)] bg-white/[0.04] p-6">
+                    <CheckCircle2 className="h-10 w-10 text-[var(--accent-bright)]" />
+                    <h3 className="headline-display mt-4 text-2xl font-semibold text-[var(--foreground)]">
+                      Request preview created
+                    </h3>
+                    <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
+                      {profile.name} in {profile.area} has been matched with your preferred {bookingForm.time.toLowerCase()} slot.
+                    </p>
+                    <div className="mt-5 grid gap-3 text-sm text-[var(--muted)] sm:grid-cols-2">
+                      <div className="rounded-2xl bg-black/24 p-4 ring-1 ring-white/[0.06]">
+                        <span className="block text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-[var(--muted-deep)]">
+                          Contact
+                        </span>
+                        <span className="mt-1 block truncate text-[var(--foreground)]">{bookingForm.contact}</span>
+                      </div>
+                      <div className="rounded-2xl bg-black/24 p-4 ring-1 ring-white/[0.06]">
+                        <span className="block text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-[var(--muted-deep)]">
+                          Date
+                        </span>
+                        <span className="mt-1 block text-[var(--foreground)]">{bookingForm.date}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    className="button-primary mt-5 w-full py-3"
+                    onClick={() => setBookingOpen(false)}
+                  >
+                    Done
+                  </button>
+                </div>
+              ) : (
+                <form className="space-y-4 px-5 py-6 md:px-7" onSubmit={submitBooking}>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <label className="block">
+                      <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                        Your name
+                      </span>
+                      <input
+                        className="input-surface"
+                        value={bookingForm.name}
+                        onChange={(e) => setBookingForm((current) => ({ ...current, name: e.target.value }))}
+                        placeholder="Display name"
+                        required
+                      />
+                    </label>
+                    <label className="block">
+                      <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                        Contact
+                      </span>
+                      <input
+                        className="input-surface"
+                        value={bookingForm.contact}
+                        onChange={(e) => setBookingForm((current) => ({ ...current, contact: e.target.value }))}
+                        placeholder="Phone or email"
+                        required
+                      />
+                    </label>
+                  </div>
+
+                  <div className="grid gap-4 sm:grid-cols-3">
+                    <label className="block">
+                      <span className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                        <CalendarClock className="h-3.5 w-3.5 text-[var(--accent)]" />
+                        Date
+                      </span>
+                      <input
+                        className="input-surface"
+                        type="date"
+                        value={bookingForm.date}
+                        onChange={(e) => setBookingForm((current) => ({ ...current, date: e.target.value }))}
+                        required
+                      />
+                    </label>
+                    <label className="block">
+                      <span className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                        <Clock className="h-3.5 w-3.5 text-[var(--accent)]" />
+                        Time
+                      </span>
+                      <select
+                        className="input-surface"
+                        value={bookingForm.time}
+                        onChange={(e) => setBookingForm((current) => ({ ...current, time: e.target.value }))}
+                      >
+                        <option value="Morning">Morning</option>
+                        <option value="Afternoon">Afternoon</option>
+                        <option value="Evening">Evening</option>
+                        <option value="Late night">Late night</option>
+                      </select>
+                    </label>
+                    <label className="block">
+                      <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                        Plan
+                      </span>
+                      <select
+                        className="input-surface"
+                        value={bookingForm.plan}
+                        onChange={(e) => setBookingForm((current) => ({ ...current, plan: e.target.value as Profile["category"] }))}
+                      >
+                        <option value="Dinner Date">Dinner Date</option>
+                        <option value="Party Partner">Party Partner</option>
+                        <option value="Travel Companion">Travel Companion</option>
+                      </select>
+                    </label>
+                  </div>
+
+                  <label className="block">
+                    <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                      Notes
+                    </span>
+                    <textarea
+                      className="input-surface min-h-28 resize-none"
+                      value={bookingForm.notes}
+                      onChange={(e) => setBookingForm((current) => ({ ...current, notes: e.target.value }))}
+                      placeholder="Area, venue preference, or any concierge notes"
+                    />
+                  </label>
+
+                  <div className="flex flex-col gap-3 border-t border-white/[0.08] pt-4 sm:flex-row sm:items-center sm:justify-between">
+                    <p className="text-xs leading-5 text-[var(--muted-deep)]">
+                      18+ only. Availability and details are confirmed before scheduling.
+                    </p>
+                    <button type="submit" className="button-primary shrink-0 px-7 py-3">
+                      Send request
+                    </button>
+                  </div>
+                </form>
+              )}
+            </motion.div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+
       <div className="fixed bottom-0 left-0 right-0 z-[90] border-t border-white/[0.08] bg-[rgba(6,5,8,0.82)] p-4 backdrop-blur-2xl md:hidden">
         <div className="container-shell flex items-center justify-between gap-3">
           <div>
@@ -320,10 +517,10 @@ export function ProfileLuxuryClient({ profile }: { profile: Profile }) {
             <p className="headline-display text-xl font-semibold text-[var(--accent-bright)]">{currency(profile.price)}</p>
           </div>
           <div className="flex flex-1 justify-end gap-2">
-            <button type="button" className="button-secondary flex-1 py-3 text-sm">
+            <button type="button" className="button-secondary flex-1 py-3 text-sm" onClick={openBooking}>
               Chat
             </button>
-            <button type="button" className="button-primary flex-1 py-3 text-sm">
+            <button type="button" className="button-primary flex-1 py-3 text-sm" onClick={openBooking}>
               Book
             </button>
           </div>

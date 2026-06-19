@@ -28,7 +28,7 @@ function ProfileCardMidnight({ profile }: { profile: Profile }) {
   return (
     <Link
       ref={ref}
-      href={`/profile/${profile.id}`}
+      href={`/profile/${profile.slug}`}
       onMouseMove={onMove}
       className="group relative block overflow-hidden rounded-[1.35rem] border border-[rgba(212,175,55,0.22)] bg-[linear-gradient(165deg,rgba(22,18,26,0.92),rgba(8,6,10,0.78))] shadow-[0_28px_90px_rgba(0,0,0,0.55)] ring-1 ring-white/[0.04] transition duration-500 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgba(212,175,55,0.55)] hover:-translate-y-1 hover:scale-[1.035] hover:border-[rgba(236,72,153,0.38)] hover:shadow-[0_40px_120px_rgba(92,26,46,0.42)]"
     >
@@ -117,7 +117,7 @@ function ProfileCardMidnight({ profile }: { profile: Profile }) {
 function ProfileCardRose({ profile }: { profile: Profile }) {
   return (
     <Link
-      href={`/profile/${profile.id}`}
+      href={`/profile/${profile.slug}`}
       className="group relative block overflow-hidden rounded-[20px] border border-[#ffd0e8] bg-white/85 shadow-[0_20px_60px_rgba(255,77,141,0.14)] ring-1 ring-white/80 transition duration-400 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff4d8d] hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-[0_28px_80px_rgba(255,77,141,0.28)]"
     >
       <div className="relative h-72 overflow-hidden md:h-[19.5rem]">

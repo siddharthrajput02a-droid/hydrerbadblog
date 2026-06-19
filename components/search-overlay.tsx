@@ -117,7 +117,7 @@ export function SearchOverlay({ open, onClose }: Props) {
                     transition={{ delay: i * 0.04, duration: 0.3 }}
                   >
                     <Link
-                      href={`/profile/${p.id}`}
+                      href={`/profile/${p.slug}`}
                       onClick={onClose}
                       className="group flex items-center gap-3 rounded-2xl px-2 py-2.5 transition hover:bg-white/[0.04]"
                     >

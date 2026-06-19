@@ -39,7 +39,7 @@ function LuxuryCarouselCard({ profile, tone }: { profile: Profile; tone: RailTon
 
   return (
     <Link
-      href={`/profile/${profile.id}`}
+      href={`/profile/${profile.slug}`}
       className={`group relative flex w-[min(78vw,300px)] shrink-0 snap-center flex-col overflow-hidden transition duration-500 ease-out hover:-translate-y-1 hover:scale-[1.04] md:w-[280px] ${cardClass}`}
     >
       <span className="pointer-events-none absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100">
