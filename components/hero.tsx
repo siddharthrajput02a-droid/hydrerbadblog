@@ -50,7 +50,7 @@ export function Hero() {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-contain bg-center bg-no-repeat opacity-90 saturate-[1.08]"
+        className="pointer-events-none absolute inset-0 bg-contain bg-[center_top] bg-no-repeat opacity-90 saturate-[1.08]"
         style={{ backgroundImage: `url("${HERO_IMAGE}")` }}
       />
 
