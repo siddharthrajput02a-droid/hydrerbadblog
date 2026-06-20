@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
@@ -37,7 +37,18 @@ export const metadata: Metadata = {
     "Jubilee Hills",
     "Hitech City",
     "premium dating Hyderabad"
-  ]
+  ],
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: siteConfig.name
+  }
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover"
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {

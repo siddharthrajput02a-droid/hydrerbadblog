@@ -5,13 +5,18 @@ import Link from "next/link";
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowLeft,
+  BadgeCheck,
   CalendarClock,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
   Clock,
+  IndianRupee,
+  Languages,
+  MapPin,
   Phone,
   Send,
+  ShieldCheck,
   Sparkles,
   Star,
   X
@@ -63,6 +68,13 @@ export function ProfileLuxuryClient({ profile }: { profile: Profile }) {
     event.preventDefault();
     setBookingSent(true);
   }
+
+  const highlights = [
+    { label: "Area", value: profile.area, icon: MapPin },
+    { label: "Rate", value: currency(profile.price), icon: IndianRupee },
+    { label: "Languages", value: profile.languages.join(", "), icon: Languages },
+    { label: "Verified", value: "18+ checked", icon: ShieldCheck }
+  ];
 
   const reviews = [
     { who: "Verified member", quote: "Poised, punctual, and effortlessly warm — the room leaned in when she spoke.", stars: 5 },
@@ -130,6 +142,20 @@ export function ProfileLuxuryClient({ profile }: { profile: Profile }) {
                 Request details
               </button>
             </div>
+            <div className="mt-10 grid w-full max-w-4xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {highlights.map(({ label, value, icon: Icon }) => (
+                <div
+                  key={label}
+                  className="rounded-[1.15rem] border border-white/[0.12] bg-black/35 px-4 py-4 text-left shadow-[0_16px_44px_rgba(0,0,0,0.32)] backdrop-blur-xl"
+                >
+                  <div className="flex items-center gap-2 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-white/45">
+                    <Icon className="h-3.5 w-3.5 text-[#e8d5a3]" />
+                    {label}
+                  </div>
+                  <p className="mt-2 line-clamp-1 text-sm font-semibold text-white">{value}</p>
+                </div>
+              ))}
+            </div>
           </motion.div>
         </div>
       </section>
@@ -138,39 +164,63 @@ export function ProfileLuxuryClient({ profile }: { profile: Profile }) {
         <div className="space-y-20">
         <motion.section {...fade} className="luxury-glass relative overflow-hidden rounded-[2rem] p-8 md:p-11">
           <div className="pointer-events-none absolute -right-16 top-0 h-48 w-48 rounded-full bg-[radial-gradient(circle,rgba(236,72,153,0.18),transparent_70%)] blur-2xl" />
-          <h2 className="headline-display text-2xl font-semibold text-[var(--foreground)] md:text-3xl">About</h2>
-          <motion.p
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-40px" }}
-            variants={{
-              hidden: {},
-              show: { transition: { staggerChildren: 0.04 } }
-            }}
-            className="section-copy mt-6 max-w-3xl text-[1.08rem]"
-          >
-            {profile.description.split(/(?<=[.!?])\s+/).map((sentence, i) => (
-              <motion.span
-                key={i}
+          <div className="grid gap-8 lg:grid-cols-[1fr,280px] lg:items-start">
+            <div>
+              <p className="inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                <BadgeCheck className="h-3.5 w-3.5 text-[#e8d5a3]" />
+                Profile brief
+              </p>
+              <h2 className="headline-display mt-5 text-2xl font-semibold text-[var(--foreground)] md:text-3xl">About</h2>
+              <motion.p
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, margin: "-40px" }}
                 variants={{
-                  hidden: { opacity: 0, y: 10 },
-                  show: { opacity: 1, y: 0 }
+                  hidden: {},
+                  show: { transition: { staggerChildren: 0.04 } }
                 }}
-                className="inline"
+                className="section-copy mt-6 max-w-3xl text-[1.08rem]"
               >
-                {sentence}{" "}
-              </motion.span>
-            ))}
-          </motion.p>
-          <div className="mt-8 flex flex-wrap gap-2">
-            {profile.languages.map((language) => (
-              <span
-                key={language}
-                className="rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-2 text-sm text-[var(--muted)] ring-1 ring-white/[0.04]"
-              >
-                {language}
-              </span>
-            ))}
+                {profile.description.split(/(?<=[.!?])\s+/).map((sentence, i) => (
+                  <motion.span
+                    key={i}
+                    variants={{
+                      hidden: { opacity: 0, y: 10 },
+                      show: { opacity: 1, y: 0 }
+                    }}
+                    className="inline"
+                  >
+                    {sentence}{" "}
+                  </motion.span>
+                ))}
+              </motion.p>
+              <div className="mt-8 flex flex-wrap gap-2">
+                {profile.languages.map((language) => (
+                  <span
+                    key={language}
+                    className="rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-2 text-sm text-[var(--muted)] ring-1 ring-white/[0.04]"
+                  >
+                    {language}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-[1.5rem] border border-white/[0.08] bg-black/20 p-4 ring-1 ring-white/[0.04]">
+              {highlights.map(({ label, value, icon: Icon }) => (
+                <div key={label} className="flex items-center gap-3 border-b border-white/[0.06] py-3 last:border-b-0">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/[0.05] text-[#e8d5a3] ring-1 ring-white/[0.08]">
+                    <Icon className="h-4 w-4" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-[0.65rem] font-semibold uppercase tracking-[0.15em] text-[var(--muted-deep)]">
+                      {label}
+                    </span>
+                    <span className="mt-0.5 block truncate text-sm font-semibold text-[var(--foreground)]">{value}</span>
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </motion.section>
 
@@ -191,12 +241,15 @@ export function ProfileLuxuryClient({ profile }: { profile: Profile }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.45, delay: (i % 6) * 0.05 }}
-                className="relative mb-4 break-inside-avoid overflow-hidden rounded-2xl ring-1 ring-white/[0.08] w-full"
+                className="group relative mb-4 w-full break-inside-avoid overflow-hidden rounded-[1.35rem] bg-black ring-1 ring-white/[0.08] transition duration-500 hover:-translate-y-1 hover:ring-[rgba(212,175,55,0.35)]"
                 onClick={() => setLightbox(i)}
               >
                 <div className="relative aspect-[3/4] w-full">
-                  <Image src={src} alt="" fill className="object-cover transition duration-700 hover:scale-[1.04]" sizes="(max-width:768px)100vw,33vw" />
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent opacity-70" />
+                  <Image src={src} alt="" fill className="object-cover transition duration-700 group-hover:scale-[1.06]" sizes="(max-width:768px)100vw,33vw" />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-80" />
+                  <span className="absolute bottom-3 left-3 rounded-full border border-white/15 bg-black/45 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-white/75 backdrop-blur-md">
+                    View {i + 1}
+                  </span>
                 </div>
               </motion.button>
             ))}
@@ -270,9 +323,19 @@ export function ProfileLuxuryClient({ profile }: { profile: Profile }) {
             Close the distance — book through concierge or return to the lounge to keep browsing.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <button type="button" className="button-primary min-w-[12rem] px-10 py-3" onClick={openBooking}>
-              Book privately
-            </button>
+            <a href={`tel:${CONTACT_PHONE}`} className="button-primary inline-flex min-w-[12rem] items-center justify-center gap-2 px-10 py-3">
+              <Phone className="h-4 w-4" />
+              Call now
+            </a>
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex min-h-[48px] min-w-[12rem] items-center justify-center gap-2 rounded-full bg-[#25d366] px-10 text-sm font-semibold text-[#04120a] transition hover:brightness-110"
+            >
+              <Send className="h-4 w-4" />
+              WhatsApp
+            </a>
             <Link href="/hyderabad" className="button-secondary min-w-[12rem] px-10 py-3 text-center">
               Back to lounge
             </Link>
@@ -287,9 +350,29 @@ export function ProfileLuxuryClient({ profile }: { profile: Profile }) {
             transition={{ delay: 0.2, duration: 0.55 }}
             className="sticky top-28 luxury-glass rounded-3xl p-7 shadow-[0_40px_120px_rgba(0,0,0,0.55)]"
           >
+            <div className="relative mb-6 overflow-hidden rounded-[1.35rem] ring-1 ring-white/[0.08]">
+              <div className="relative aspect-[4/5]">
+                <Image src={profile.image} alt="" fill className="object-cover" sizes="360px" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
+                <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-black/45 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-md">
+                  <ShieldCheck className="h-3.5 w-3.5 text-[#e8d5a3]" />
+                  Verified
+                </span>
+              </div>
+            </div>
             <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-[var(--muted)]">Reserve</p>
             <p className="headline-display mt-3 text-3xl font-semibold text-[var(--foreground)]">{currency(profile.price)}</p>
             <p className="mt-2 text-sm text-[var(--muted)]">Starting rate · bespoke itineraries on request</p>
+            <div className="mt-5 grid grid-cols-2 gap-2">
+              <div className="rounded-2xl bg-white/[0.04] p-3 ring-1 ring-white/[0.06]">
+                <p className="text-[0.6rem] font-semibold uppercase tracking-[0.14em] text-[var(--muted-deep)]">Area</p>
+                <p className="mt-1 truncate text-sm font-semibold text-[var(--foreground)]">{profile.area}</p>
+              </div>
+              <div className="rounded-2xl bg-white/[0.04] p-3 ring-1 ring-white/[0.06]">
+                <p className="text-[0.6rem] font-semibold uppercase tracking-[0.14em] text-[var(--muted-deep)]">Rating</p>
+                <p className="mt-1 text-sm font-semibold text-[var(--foreground)]">{profile.rating}</p>
+              </div>
+            </div>
             <div className="mt-6 flex flex-col gap-2.5">
               <MagneticWrap className="block">
                 <a href={`tel:${CONTACT_PHONE}`} className="button-primary flex w-full items-center justify-center gap-2 py-3 text-sm">

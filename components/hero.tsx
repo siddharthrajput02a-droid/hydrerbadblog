@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -11,6 +12,8 @@ import {
   ShieldCheck,
   Sparkles,
   Users,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 
 const fade = (delay = 0) => ({
@@ -37,28 +40,136 @@ const bookingSteps = [
   { icon: CalendarCheck, label: "Book", value: "Private schedule" },
 ];
 
-const HERO_IMAGE =
-  "https://imagex1.sx.cdn.live/images/pinporn/2020/07/15/23314174.webp?width=620";
+const HERO_VIDEO =
+  "/images/Xvideos_teens_analyzed_-_red_dress_helena_dickens_for_anal_anal-porn_teen-porn_SD.mp4";
 
 const CALL_NUMBER = "+910000000000";
 
 export function Hero() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const mutedRef = useRef(false);
+  const [isMuted, setIsMuted] = useState(false);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const video = videoRef.current;
+
+    if (!section || !video) {
+      return;
+    }
+
+    let active = true;
+
+    const playHeroVideo = async () => {
+      if (!active) {
+        return;
+      }
+
+      try {
+        video.muted = mutedRef.current;
+        await video.play();
+      } catch {
+        mutedRef.current = true;
+        video.muted = true;
+        setIsMuted(true);
+        void video.play().catch(() => undefined);
+      }
+    };
+
+    const pauseHeroVideo = () => {
+      video.pause();
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          void playHeroVideo();
+          return;
+        }
+
+        pauseHeroVideo();
+      },
+      { threshold: 0.01 }
+    );
+
+    observer.observe(section);
+
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        pauseHeroVideo();
+        return;
+      }
+
+      const rect = section.getBoundingClientRect();
+      const inViewport = rect.bottom > 0 && rect.top < window.innerHeight;
+
+      if (inViewport) {
+        void playHeroVideo();
+      }
+    };
+
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    return () => {
+      active = false;
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      pauseHeroVideo();
+    };
+  }, []);
+
+  const toggleSound = () => {
+    const nextMuted = !isMuted;
+    const video = videoRef.current;
+
+    mutedRef.current = nextMuted;
+    setIsMuted(nextMuted);
+
+    if (video) {
+      video.muted = nextMuted;
+      void video.play().catch(() => undefined);
+    }
+  };
+
   return (
     <section
+      ref={sectionRef}
       data-cinematic="hero"
-      className="relative z-[1] -mt-[76px] min-h-screen overflow-hidden bg-black pt-[76px]"
+      className="relative isolate z-[1] min-h-[100svh] min-h-[100dvh] overflow-hidden bg-black"
     >
+      <video
+        ref={videoRef}
+        aria-hidden
+        autoPlay
+        loop
+        muted={isMuted}
+        playsInline
+        preload="auto"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center opacity-85 saturate-[1.12]"
+      >
+        <source src={HERO_VIDEO} type="video/mp4" />
+      </video>
+
+      <button
+        type="button"
+        aria-label={isMuted ? "Turn hero video sound on" : "Mute hero video"}
+        className="absolute right-[max(1rem,env(safe-area-inset-right))] top-[calc(5.75rem+env(safe-area-inset-top))] z-20 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-black/35 text-white shadow-[0_12px_34px_rgba(0,0,0,0.35)] backdrop-blur-md transition hover:border-white/30 hover:bg-black/50 sm:right-[max(1.5rem,env(safe-area-inset-right))]"
+        onClick={toggleSound}
+      >
+        {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+      </button>
+
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-contain bg-[center_top] bg-no-repeat opacity-100 saturate-[1.12]"
-        style={{ backgroundImage: `url("${HERO_IMAGE}")` }}
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_24%,rgba(255,255,255,0.08),transparent_24%)]"
       />
 
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.78)_0%,rgba(0,0,0,0.48)_24%,rgba(0,0,0,0.18)_52%,rgba(0,0,0,0.48)_78%,rgba(0,0,0,0.78)_100%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.18)_0%,rgba(0,0,0,0.14)_34%,rgba(0,0,0,0.1)_52%,#000_100%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_34%,transparent_0%,rgba(0,0,0,0.06)_38%,rgba(0,0,0,0.42)_82%)]" />
 
-      <div className="container-shell relative z-10 grid min-h-[calc(100svh-76px)] place-items-center py-20 text-center sm:py-24 lg:py-28">
+      <div className="container-shell relative z-10 grid min-h-[100svh] min-h-[100dvh] place-items-center pb-[calc(3rem+env(safe-area-inset-bottom))] pt-[calc(6.5rem+env(safe-area-inset-top))] text-center sm:pb-[calc(4rem+env(safe-area-inset-bottom))] sm:pt-[calc(7rem+env(safe-area-inset-top))] lg:pb-[calc(5rem+env(safe-area-inset-bottom))] lg:pt-[calc(7.5rem+env(safe-area-inset-top))]">
         <div className="mx-auto flex max-w-3xl flex-col items-center justify-center">
       
 

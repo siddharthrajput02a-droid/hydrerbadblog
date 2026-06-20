@@ -29,11 +29,11 @@ function profileMessage(profile: Profile) {
 function ProfileContactActions({ profile, tone }: { profile: Profile; tone: ProfileCardVariant }) {
   const message = profileMessage(profile);
   const base =
-    "inline-flex min-h-[42px] items-center justify-center gap-1.5 rounded-full px-2.5 text-[0.68rem] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2";
+    "inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-full px-2.5 text-[0.72rem] font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2";
   const dark =
-    "bg-white/[0.06] text-white ring-1 ring-white/[0.08] hover:bg-white/[0.1] focus-visible:outline-[rgba(212,175,55,0.55)]";
+    "bg-white text-[#170911] shadow-[0_10px_28px_rgba(255,255,255,0.16)] ring-1 ring-white/50 hover:bg-[#ffe7f1] focus-visible:outline-[rgba(255,255,255,0.8)]";
   const soft =
-    "bg-[#fff1f7] text-[#7c294f] ring-1 ring-[#ffd0e8] hover:bg-[#ffe4f0] focus-visible:outline-[#ff4d8d]";
+    "bg-[#2a1520] text-white shadow-[0_10px_28px_rgba(42,21,32,0.16)] ring-1 ring-[#ffbfd9] hover:bg-[#441f32] focus-visible:outline-[#ff4d8d]";
 
   return (
     <div className="mt-4 grid grid-cols-3 gap-2">
