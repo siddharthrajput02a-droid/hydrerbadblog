@@ -118,6 +118,13 @@ export function Hero() {
               Book profiles
               <ArrowRight className="h-4 w-4" />
             </Link>
+            <Link
+              href="/post-ad"
+              className="inline-flex min-h-[52px] items-center gap-2 rounded-full border border-[rgba(255,77,141,0.45)] bg-[rgba(255,77,141,0.12)] px-8 text-base font-semibold text-[#ffd6e8] backdrop-blur-md transition hover:border-[rgba(255,77,141,0.62)] hover:bg-[rgba(255,77,141,0.18)]"
+            >
+              <Sparkles className="h-4 w-4" />
+              Post ad
+            </Link>
           </motion.div>
 
           <motion.div

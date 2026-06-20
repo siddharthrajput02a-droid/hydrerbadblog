@@ -1,20 +1,17 @@
 import type { Metadata } from "next";
-import { DashboardShell } from "@/components/dashboard-shell";
+import { MyAdsClient } from "@/components/my-ads-client";
 
 export const metadata: Metadata = {
-  title: "My Listings",
-  description: "Manage your Hyderabad daytime dating listings with a frontend-only dashboard."
+  title: "My Ads",
+  description: "Manage profile ads posted from this browser."
 };
 
 export default function DashboardPage() {
   return (
-    <section className="section-spacing">
-      <div className="container-shell">
-        <div className="mb-8">
-          <p className="pill">User Dashboard</p>
-          <h1 className="headline-display section-title mt-5">Manage your Hyderabad listings</h1>
-        </div>
-        <DashboardShell />
+    <section className="section-spacing relative overflow-hidden bg-[var(--background)]">
+      <div className="pointer-events-none absolute left-1/2 top-0 h-[min(46%,380px)] w-[min(92%,760px)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(236,72,153,0.14),transparent_70%)] blur-3xl" />
+      <div className="container-shell relative">
+        <MyAdsClient />
       </div>
     </section>
   );

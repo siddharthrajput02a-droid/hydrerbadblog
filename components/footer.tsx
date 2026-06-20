@@ -5,6 +5,9 @@ import { slugifyArea } from "@/lib/utils";
 
 const quickLinks = [
   { label: "All Hyderabad profiles", href: "/hyderabad" },
+  { label: "Posted ads",           href: "/ads"        },
+  { label: "Post profile ad",       href: "/post-ad"    },
+  { label: "My ads",                href: "/my-ads"     },
   { label: "Member login",           href: "/login"      },
   { label: "Admin panel",            href: "/admin"      },
 ];

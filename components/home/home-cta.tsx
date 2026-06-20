@@ -48,10 +48,18 @@ export function HomeCta() {
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
               <Link
-                href="/login"
+                href="/ads"
                 className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-white/20 bg-white/[0.06] px-6 text-center text-base font-semibold text-white backdrop-blur-md transition hover:border-white/35 hover:bg-white/10"
               >
-                Request access
+                Posted ads
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/post-ad"
+                className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-white/20 bg-white/[0.06] px-6 text-center text-base font-semibold text-white backdrop-blur-md transition hover:border-white/35 hover:bg-white/10"
+              >
+                Post profile ad
+                <ArrowUpRight className="h-4 w-4" />
               </Link>
             </div>
           </div>

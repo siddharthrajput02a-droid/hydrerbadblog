@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { BadgeCheck, CalendarClock, Clock3, ShieldCheck, UserRoundCheck } from "lucide-react";
+import { AdminAdsModeration } from "@/components/admin-ads-moderation";
 import { profiles } from "@/data/profiles";
 import { currency } from "@/lib/utils";
 
@@ -57,6 +58,10 @@ export default function AdminDashboardPage() {
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="mt-8">
+          <AdminAdsModeration />
         </div>
 
         <div className="mt-8 grid gap-8 xl:grid-cols-[1fr,360px]">

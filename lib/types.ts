@@ -33,3 +33,23 @@ export interface AdDraft {
   description: string;
   status: "Pending" | "Approved" | "Rejected";
 }
+
+export type AdStatus = "Pending" | "Approved" | "Rejected";
+
+export interface UserAd {
+  id: string;
+  ownerId: string;
+  title: string;
+  name: string;
+  age: number;
+  area: Area;
+  category: Profile["category"];
+  price: number;
+  phone: string;
+  whatsapp: string;
+  image: string;
+  description: string;
+  status: AdStatus;
+  createdAt: string;
+  updatedAt: string;
+}

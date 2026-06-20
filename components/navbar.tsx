@@ -2,13 +2,15 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Menu, Search, X } from "lucide-react";
+import { Menu, PlusCircle, Search, X } from "lucide-react";
 import { SearchOverlay } from "@/components/search-overlay";
 
 const navItems = [
   { href: "/", label: "Lounge" },
   { href: "/hyderabad", label: "Hyderabad" },
-  { href: "/dashboard", label: "Members" },
+  { href: "/ads", label: "Posted Ads" },
+  { href: "/post-ad", label: "Post Ad" },
+  { href: "/my-ads", label: "My Ads" },
   { href: "/admin/dashboard", label: "House" },
   { href: "/login", label: "Enter" }
 ];
@@ -54,6 +56,13 @@ export function Navbar() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <Link
+              href="/post-ad"
+              className="hidden min-h-11 items-center gap-2 rounded-full border border-[rgba(255,77,141,0.4)] bg-[rgba(255,77,141,0.12)] px-4 text-sm font-semibold text-[#ffd6e8] shadow-[0_8px_32px_rgba(255,77,141,0.12)] transition hover:border-[rgba(255,77,141,0.6)] hover:bg-[rgba(255,77,141,0.18)] md:inline-flex"
+            >
+              <PlusCircle className="h-4 w-4" />
+              Post Ad
+            </Link>
             <button
               type="button"
               className="hidden h-11 w-11 items-center justify-center rounded-2xl border border-[rgba(212,175,55,0.22)] bg-white/[0.03] text-[var(--foreground)] shadow-[0_8px_32px_rgba(0,0,0,0.35)] transition hover:border-[rgba(212,175,55,0.45)] hover:bg-white/[0.06] md:inline-flex"
