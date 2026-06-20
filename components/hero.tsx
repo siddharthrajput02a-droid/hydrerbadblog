@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -40,7 +39,7 @@ const bookingSteps = [
 ];
 
 const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=2400&q=90";
+  "https://go.pornpics.chat/?userId=353e4188d9a9c1a093c1c9f0924ec9ad933d0e4dc993217fdd17e56b5ac764bd&showModal=signup&targetDomain=pornpics.chat&path=/Naughty_Mariheader";
 
 const CALL_NUMBER = "+910000000000";
 
@@ -48,24 +47,21 @@ export function Hero() {
   return (
     <section
       data-cinematic="hero"
-      className="relative z-[1] min-h-[calc(100svh-76px)] overflow-hidden bg-[#090507]"
+      className="relative z-[1] -mt-[76px] min-h-screen overflow-hidden bg-[#090507] pt-[76px]"
     >
-      <Image
-        src={HERO_IMAGE}
-        alt=""
+      <div
         aria-hidden
-        fill
-        priority
-        sizes="100vw"
-        className="pointer-events-none object-cover object-[63%_top] opacity-80"
+        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat opacity-85 saturate-[1.08]"
+        style={{ backgroundImage: `url("${HERO_IMAGE}")` }}
       />
 
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#090507_0%,rgba(9,5,7,0.93)_27%,rgba(9,5,7,0.58)_56%,rgba(9,5,7,0.2)_100%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(9,5,7,0.7)_0%,rgba(9,5,7,0.04)_36%,#090507_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#090507_0%,rgba(9,5,7,0.86)_30%,rgba(9,5,7,0.48)_60%,rgba(9,5,7,0.18)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(9,5,7,0.58)_0%,rgba(9,5,7,0.08)_34%,#090507_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_34%,rgba(255,77,141,0.18),transparent_34%),radial-gradient(circle_at_18%_24%,rgba(212,175,55,0.12),transparent_30%)]" />
 
-      <div className="container-shell relative z-10 grid min-h-[calc(100svh-76px)] items-center py-20 sm:py-24 lg:py-28">
-        <div className="flex max-w-2xl flex-col justify-center">
-          <motion.div {...fade(0)} className="flex flex-wrap items-center gap-2">
+      <div className="container-shell relative z-10 grid min-h-[calc(100svh-76px)] place-items-center py-20 text-center sm:py-24 lg:py-28">
+        <div className="mx-auto flex max-w-3xl flex-col items-center justify-center">
+          <motion.div {...fade(0)} className="flex flex-wrap items-center justify-center gap-2">
             <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,77,141,0.45)] bg-[rgba(255,77,141,0.12)] px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[#ffb7d6] backdrop-blur-md">
               <MapPin className="h-3 w-3 text-[#ff4d8d]" />
               Hyderabad premium booking
@@ -78,20 +74,20 @@ export function Hero() {
 
           <motion.h1
             {...fade(0.08)}
-            className="headline-display mt-7 max-w-[12ch] text-[clamp(2.45rem,7vw,5.8rem)] font-semibold leading-[0.98] tracking-[-0.03em] text-white"
+            className="headline-display mt-7 max-w-[13ch] text-center text-[clamp(2.45rem,7vw,5.8rem)] font-semibold leading-[0.98] tracking-[-0.03em] text-white"
           >
             Call escorts in <span className="text-gradient-rose">Hyderabad</span>
           </motion.h1>
 
           <motion.p
             {...fade(0.14)}
-            className="mt-6 max-w-xl text-[1.02rem] leading-[1.8] text-white/68 sm:text-[1.08rem]"
+            className="mx-auto mt-6 max-w-2xl text-center text-[1.02rem] leading-[1.8] text-white/72 sm:text-[1.08rem]"
           >
             Browse verified companion profiles, choose your area, and book privately by call or chat.
             A clean Hyderabad directory for adults who want fast, discreet plans.
           </motion.p>
 
-          <motion.div {...fade(0.18)} className="mt-7 flex flex-wrap gap-3">
+          <motion.div {...fade(0.18)} className="mt-7 flex flex-wrap justify-center gap-3">
             {trust.map(({ icon: Icon, label }) => (
               <span
                 key={label}
@@ -103,7 +99,7 @@ export function Hero() {
             ))}
           </motion.div>
 
-          <motion.div {...fade(0.24)} className="mt-9 flex flex-wrap gap-3">
+          <motion.div {...fade(0.24)} className="mt-9 flex flex-wrap justify-center gap-3">
             <Link
               href={`tel:${CALL_NUMBER}`}
               className="button-hyd-primary inline-flex min-h-[52px] items-center gap-2 px-8 text-base"
@@ -129,7 +125,7 @@ export function Hero() {
 
           <motion.div
             {...fade(0.3)}
-            className="mt-9 grid max-w-2xl gap-2 rounded-[1.25rem] border border-white/10 bg-[#12080e]/75 p-2 shadow-[0_24px_70px_rgba(0,0,0,0.32)] backdrop-blur-xl sm:grid-cols-3"
+            className="mx-auto mt-9 grid w-full max-w-2xl gap-2 rounded-[1.25rem] border border-white/10 bg-[#12080e]/75 p-2 text-left shadow-[0_24px_70px_rgba(0,0,0,0.32)] backdrop-blur-xl sm:grid-cols-3"
           >
             {bookingSteps.map(({ icon: Icon, label, value }) => (
               <div
@@ -151,7 +147,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.42, duration: 0.5 }}
-            className="mt-8 flex flex-wrap gap-7 border-t border-white/10 pt-7"
+            className="mt-8 flex flex-wrap justify-center gap-7 border-t border-white/10 pt-7 text-center"
           >
             {stats.map((s) => (
               <div key={s.label}>

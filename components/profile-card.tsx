@@ -8,7 +8,6 @@ import {
   BadgeCheck,
   CalendarClock,
   MapPin,
-  MessageCircle,
   Phone,
   Send,
   Star
@@ -42,10 +41,10 @@ function ProfileContactActions({ profile, tone }: { profile: Profile; tone: Prof
         <Phone className="h-3.5 w-3.5 shrink-0" />
         Call
       </a>
-      <a href={`sms:${DEFAULT_PHONE}?body=${message}`} className={`${base} ${tone === "rose" ? soft : dark}`}>
-        <MessageCircle className="h-3.5 w-3.5 shrink-0" />
-        Chat
-      </a>
+      <Link href={`/profile/${profile.slug}`} className={`${base} ${tone === "rose" ? soft : dark}`}>
+        <ArrowRight className="h-3.5 w-3.5 shrink-0" />
+        View
+      </Link>
       <a
         href={`https://wa.me/${DEFAULT_WHATSAPP}?text=${message}`}
         target="_blank"
@@ -111,8 +110,8 @@ function ProfileCardMidnight({ profile }: { profile: Profile }) {
               Tonight
             </span>
             <span className="inline-flex items-center gap-1.5 text-[#f5e5ba]">
-              <MessageCircle className="h-4 w-4" />
-              Chat ready
+              <Send className="h-4 w-4" />
+              WhatsApp ready
             </span>
           </div>
         </div>
@@ -148,15 +147,8 @@ function ProfileCardMidnight({ profile }: { profile: Profile }) {
           </span>
         </div>
 
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-4">
           <span className="text-lg font-semibold tracking-tight text-[var(--accent-bright)] md:text-xl">{currency(profile.price)}</span>
-          <Link
-            href={`/profile/${profile.slug}`}
-            className="inline-flex min-h-[2.75rem] min-w-[7.5rem] shrink-0 items-center justify-center gap-1.5 rounded-full bg-[linear-gradient(120deg,#b8923f,#c9a24d,#7a5a12)] px-5 py-2.5 text-sm font-semibold text-[#0a0908] shadow-[0_10px_36px_rgba(201,162,77,0.28)] ring-1 ring-white/20 transition duration-300 hover:shadow-[0_14px_44px_rgba(201,162,77,0.4)]"
-          >
-            View
-            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-          </Link>
         </div>
 
         <ProfileContactActions profile={profile} tone="midnight" />
@@ -216,15 +208,8 @@ function ProfileCardRose({ profile }: { profile: Profile }) {
           </span>
         </div>
 
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
           <span className="text-lg font-semibold tracking-tight text-[#ff4d8d] md:text-xl">{currency(profile.price)}</span>
-          <Link
-            href={`/profile/${profile.slug}`}
-            className="inline-flex min-h-[44px] min-w-[8.5rem] shrink-0 items-center justify-center gap-1.5 rounded-full bg-[linear-gradient(120deg,#ff4d8d,#ff7eb3,#e63b7a)] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_10px_32px_rgba(255,77,141,0.35)] ring-1 ring-white/30 transition duration-300 hover:shadow-[0_14px_40px_rgba(255,77,141,0.45)]"
-          >
-            View Profile
-            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden />
-          </Link>
         </div>
 
         <ProfileContactActions profile={profile} tone="rose" />
