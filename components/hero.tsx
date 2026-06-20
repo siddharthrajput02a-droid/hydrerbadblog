@@ -38,7 +38,7 @@ const bookingSteps = [
 ];
 
 const HERO_IMAGE =
-  "https://cdni.pornpics.com/460/7/247/41717599/41717599_053_5bbe.jpg";
+  "https://imagex1.sx.cdn.live/images/pinporn/2020/07/15/23314174.webp?width=620";
 
 const CALL_NUMBER = "+910000000000";
 
@@ -50,13 +50,13 @@ export function Hero() {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-contain bg-[center_top] bg-no-repeat opacity-90 saturate-[1.08]"
+        className="pointer-events-none absolute inset-0 bg-contain bg-[center_top] bg-no-repeat opacity-100 saturate-[1.12]"
         style={{ backgroundImage: `url("${HERO_IMAGE}")` }}
       />
 
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#000_0%,rgba(0,0,0,0.72)_26%,rgba(0,0,0,0.38)_52%,rgba(0,0,0,0.72)_78%,#000_100%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#000_0%,rgba(0,0,0,0.42)_20%,rgba(0,0,0,0.14)_48%,#000_100%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,transparent_0%,rgba(0,0,0,0.12)_34%,rgba(0,0,0,0.55)_78%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.78)_0%,rgba(0,0,0,0.48)_24%,rgba(0,0,0,0.18)_52%,rgba(0,0,0,0.48)_78%,rgba(0,0,0,0.78)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.18)_0%,rgba(0,0,0,0.14)_34%,rgba(0,0,0,0.1)_52%,#000_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_34%,transparent_0%,rgba(0,0,0,0.06)_38%,rgba(0,0,0,0.42)_82%)]" />
 
       <div className="container-shell relative z-10 grid min-h-[calc(100svh-76px)] place-items-center py-20 text-center sm:py-24 lg:py-28">
         <div className="mx-auto flex max-w-3xl flex-col items-center justify-center">

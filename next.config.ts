@@ -21,6 +21,11 @@ const nextConfig: NextConfig = {
         pathname: "/**"
       },
       {
+        protocol: "https",
+        hostname: "imagex1.sx.cdn.live",
+        pathname: "/**"
+      },
+      {
         protocol: "http",
         hostname: "localhost",
         port: "5000",

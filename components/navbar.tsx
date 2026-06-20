@@ -33,7 +33,7 @@ export function Navbar() {
         className={`sticky top-0 z-50 border-b transition-[box-shadow,background,border-color] duration-500 ${
           scrolled
             ? "border-[rgba(255,255,255,0.12)] bg-[rgba(6,5,8,0.62)] shadow-[0_18px_70px_rgba(0,0,0,0.45)] backdrop-blur-2xl"
-            : "border-transparent bg-black/55 shadow-none backdrop-blur-sm"
+            : "border-transparent bg-black/20 shadow-none backdrop-blur-[2px]"
         }`}
       >
         <div className="container-shell flex items-center justify-between gap-4 py-3.5 md:py-4">
