@@ -16,6 +16,11 @@ const nextConfig: NextConfig = {
         pathname: "/**"
       },
       {
+        protocol: "https",
+        hostname: "cdni.pornpics.com",
+        pathname: "/**"
+      },
+      {
         protocol: "http",
         hostname: "localhost",
         port: "5000",

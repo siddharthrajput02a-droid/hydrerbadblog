@@ -39,7 +39,7 @@ const bookingSteps = [
 ];
 
 const HERO_IMAGE =
-  "https://go.pornpics.chat/?userId=353e4188d9a9c1a093c1c9f0924ec9ad933d0e4dc993217fdd17e56b5ac764bd&showModal=signup&targetDomain=pornpics.chat&path=/Naughty_Mariheader";
+  "https://cdni.pornpics.com/460/7/247/41717599/41717599_053_5bbe.jpg";
 
 const CALL_NUMBER = "+910000000000";
 
