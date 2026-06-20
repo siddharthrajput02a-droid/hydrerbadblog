@@ -6,7 +6,6 @@ import {
   ArrowRight,
   BadgeCheck,
   CalendarCheck,
-  MapPin,
   MessageCircle,
   Phone,
   ShieldCheck,
@@ -47,30 +46,21 @@ export function Hero() {
   return (
     <section
       data-cinematic="hero"
-      className="relative z-[1] -mt-[76px] min-h-screen overflow-hidden bg-[#090507] pt-[76px]"
+      className="relative z-[1] -mt-[76px] min-h-screen overflow-hidden bg-black pt-[76px]"
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat opacity-85 saturate-[1.08]"
+        className="pointer-events-none absolute inset-0 bg-contain bg-center bg-no-repeat opacity-90 saturate-[1.08]"
         style={{ backgroundImage: `url("${HERO_IMAGE}")` }}
       />
 
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#090507_0%,rgba(9,5,7,0.86)_30%,rgba(9,5,7,0.48)_60%,rgba(9,5,7,0.18)_100%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(9,5,7,0.58)_0%,rgba(9,5,7,0.08)_34%,#090507_100%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_34%,rgba(255,77,141,0.18),transparent_34%),radial-gradient(circle_at_18%_24%,rgba(212,175,55,0.12),transparent_30%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#000_0%,rgba(0,0,0,0.72)_26%,rgba(0,0,0,0.38)_52%,rgba(0,0,0,0.72)_78%,#000_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#000_0%,rgba(0,0,0,0.42)_20%,rgba(0,0,0,0.14)_48%,#000_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,transparent_0%,rgba(0,0,0,0.12)_34%,rgba(0,0,0,0.55)_78%)]" />
 
       <div className="container-shell relative z-10 grid min-h-[calc(100svh-76px)] place-items-center py-20 text-center sm:py-24 lg:py-28">
         <div className="mx-auto flex max-w-3xl flex-col items-center justify-center">
-          <motion.div {...fade(0)} className="flex flex-wrap items-center justify-center gap-2">
-            <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,77,141,0.45)] bg-[rgba(255,77,141,0.12)] px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[#ffb7d6] backdrop-blur-md">
-              <MapPin className="h-3 w-3 text-[#ff4d8d]" />
-              Hyderabad premium booking
-            </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[0.7rem] font-semibold text-white/60 backdrop-blur-md">
-              <Sparkles className="h-3 w-3 text-[#ff4d8d]" />
-              Simple and discreet
-            </span>
-          </motion.div>
+      
 
           <motion.h1
             {...fade(0.08)}
