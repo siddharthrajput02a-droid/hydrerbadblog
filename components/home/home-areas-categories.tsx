@@ -1,32 +1,12 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { MapPin, Tag } from "lucide-react";
 import Link from "next/link";
+import { hyderabadAreas } from "@/data/profiles";
 import { slugifyArea } from "@/lib/utils";
-
-const fadeUp = {
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-60px" },
-  transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
-};
 
 interface Props {
   categories: string[];
-  cities: string[];
+  cities?: string[];
 }
-
-const HYDERABAD_AREAS = [
-  "Banjara Hills",
-  "Jubilee Hills",
-  "Gachibowli",
-  "Hitech City",
-  "Madhapur",
-  "Kukatpally",
-  "Begumpet",
-  "Secunderabad",
-];
 
 export function HomeAreasAndCategories({ categories }: Props) {
   return (
@@ -42,7 +22,7 @@ export function HomeAreasAndCategories({ categories }: Props) {
         <div className="grid gap-12 lg:grid-cols-2">
 
           {/* Areas */}
-          <motion.div {...fadeUp}>
+          <div>
             <p className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,77,141,0.45)] bg-[rgba(255,77,141,0.12)] px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[#ffb7d6] backdrop-blur-md">
               <MapPin className="h-3 w-3 text-[#ff4d8d]" />
               Browse by area
@@ -51,28 +31,21 @@ export function HomeAreasAndCategories({ categories }: Props) {
               Hyderabad neighbourhoods
             </h2>
             <div className="mt-7 flex flex-wrap gap-3">
-              {HYDERABAD_AREAS.map((area, i) => (
-                <motion.div
+              {hyderabadAreas.map((area) => (
+                <Link
                   key={area}
-                  initial={{ opacity: 0, scale: 0.92 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: i * 0.04 }}
+                  href={`/hyderabad/${slugifyArea(area)}`}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-sm font-medium text-white/70 backdrop-blur-md transition hover:border-[rgba(255,77,141,0.5)] hover:bg-[rgba(255,77,141,0.12)] hover:text-white"
                 >
-                  <Link
-                    href={`/hyderabad/${slugifyArea(area)}`}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-sm font-medium text-white/70 backdrop-blur-md transition hover:border-[rgba(255,77,141,0.5)] hover:bg-[rgba(255,77,141,0.12)] hover:text-white"
-                  >
-                    <MapPin className="h-3.5 w-3.5 text-[#ff4d8d]" aria-hidden />
-                    {area}
-                  </Link>
-                </motion.div>
+                  <MapPin className="h-3.5 w-3.5 text-[#ff4d8d]" aria-hidden />
+                  {area}
+                </Link>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           {/* Categories */}
-          <motion.div {...fadeUp} transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}>
+          <div>
             <p className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,77,141,0.45)] bg-[rgba(255,77,141,0.12)] px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[#ffb7d6] backdrop-blur-md">
               <Tag className="h-3 w-3 text-[#ff4d8d]" />
               Browse by category
@@ -81,25 +54,18 @@ export function HomeAreasAndCategories({ categories }: Props) {
               What are you looking for?
             </h2>
             <div className="mt-7 flex flex-wrap gap-3">
-              {categories.map((cat, i) => (
-                <motion.div
+              {categories.map((cat) => (
+                <Link
                   key={cat}
-                  initial={{ opacity: 0, scale: 0.92 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: i * 0.06 }}
+                  href={`/hyderabad?category=${encodeURIComponent(cat)}`}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.06] px-5 py-2.5 text-sm font-semibold text-white/70 backdrop-blur-md transition hover:border-[rgba(255,77,141,0.5)] hover:bg-[rgba(255,77,141,0.12)] hover:text-white"
                 >
-                  <Link
-                    href={`/hyderabad?category=${encodeURIComponent(cat)}`}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.06] px-5 py-2.5 text-sm font-semibold text-white/70 backdrop-blur-md transition hover:border-[rgba(255,77,141,0.5)] hover:bg-[rgba(255,77,141,0.12)] hover:text-white"
-                  >
-                    <Tag className="h-3.5 w-3.5 text-[#ff4d8d]" aria-hidden />
-                    {cat}
-                  </Link>
-                </motion.div>
+                  <Tag className="h-3.5 w-3.5 text-[#ff4d8d]" aria-hidden />
+                  {cat}
+                </Link>
               ))}
             </div>
-          </motion.div>
+          </div>
 
         </div>
       </div>

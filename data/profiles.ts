@@ -3,12 +3,20 @@ import { Area, Profile } from "@/lib/types";
 export const hyderabadAreas: Area[] = [
   "Banjara Hills",
   "Jubilee Hills",
-  "Gachibowli",
   "Hitech City",
+  "Gachibowli",
   "Madhapur",
+  "Kondapur",
   "Kukatpally",
   "Begumpet",
-  "Secunderabad"
+  "Secunderabad",
+  "Ameerpet",
+  "Dilsukhnagar",
+  "LB Nagar",
+  "Miyapur",
+  "Uppal",
+  "Manikonda",
+  "Financial District"
 ];
 
 const profileBase: Omit<Profile, "id" | "slug" | "name" | "area" | "image" | "images" | "price" | "rating" | "age">[] = [

@@ -29,11 +29,13 @@ export function UserAdCard({
   showStatus?: boolean;
 }) {
   return (
-    <article className="group overflow-hidden rounded-[1.5rem] border border-[rgba(212,175,55,0.18)] bg-[linear-gradient(165deg,rgba(18,14,22,0.94),rgba(7,5,9,0.96))] shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
+    <article id={ad.id} className="group overflow-hidden rounded-[1.5rem] border border-[rgba(212,175,55,0.18)] bg-[linear-gradient(165deg,rgba(18,14,22,0.94),rgba(7,5,9,0.96))] shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
       <div className="relative h-64 overflow-hidden">
         <img
           src={ad.image}
           alt={`${ad.name} profile`}
+          loading="lazy"
+          decoding="async"
           className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.06]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />

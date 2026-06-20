@@ -1,69 +1,63 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BadgeCheck, Ban, Loader2, RefreshCw } from "lucide-react";
+import {
+  adQueryKeys,
+  fetchAds,
+  updateAd,
+  type AdsResponse
+} from "@/lib/ad-api-client";
 import type { UserAd } from "@/lib/types";
 import { UserAdCard } from "@/components/user-ad-card";
 
+function messageFrom(error: unknown, fallback: string) {
+  return error instanceof Error ? error.message : fallback;
+}
+
 export function AdminAdsModeration() {
-  const [ads, setAds] = useState<UserAd[]>([]);
+  const queryClient = useQueryClient();
   const [pin, setPin] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [workingId, setWorkingId] = useState("");
-  const [error, setError] = useState("");
-  const [storage, setStorage] = useState("");
+  const [actionError, setActionError] = useState("");
 
-  const loadAds = useCallback(async () => {
-    setLoading(true);
-    setError("");
+  const adsQuery = useQuery({
+    queryKey: adQueryKeys.admin(),
+    queryFn: () => fetchAds()
+  });
 
-    try {
-      const response = await fetch("/api/ads", { cache: "no-store" });
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        throw new Error(payload.error || "Could not load posted ads.");
-      }
-      setAds(Array.isArray(payload.ads) ? payload.ads : []);
-      setStorage(String(payload.storage || ""));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not load posted ads.");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    void loadAds();
-  }, [loadAds]);
-
+  const ads = adsQuery.data?.ads ?? [];
+  const storage = adsQuery.data?.storage ?? "";
   const pending = useMemo(() => ads.filter((ad) => ad.status === "Pending"), [ads]);
 
-  async function moderate(ad: UserAd, status: UserAd["status"]) {
-    setWorkingId(ad.id);
-    setError("");
+  const moderateMutation = useMutation({
+    mutationFn: ({ ad, status }: { ad: UserAd; status: UserAd["status"] }) =>
+      updateAd(ad.id, { status }, { adminPin: pin }),
+    onMutate: () => setActionError(""),
+    onSuccess: (payload) => {
+      const updated = payload.ad;
+      queryClient.setQueryData<AdsResponse>(adQueryKeys.admin(), (current) => ({
+        ads: (current?.ads ?? []).map((item) => (item.id === updated.id ? updated : item)),
+        storage: payload.storage || current?.storage || storage
+      }));
+      void queryClient.invalidateQueries({ queryKey: adQueryKeys.all });
+    },
+    onError: (error) => setActionError(messageFrom(error, "Could not update ad."))
+  });
 
-    try {
-      const response = await fetch(`/api/ads/${ad.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          "x-admin-pin": pin
-        },
-        body: JSON.stringify({ status })
-      });
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        throw new Error(payload.error || "Could not update ad.");
-      }
+  const loading = adsQuery.isPending && !adsQuery.data;
+  const workingId = moderateMutation.isPending ? moderateMutation.variables?.ad.id ?? "" : "";
+  const error =
+    actionError ||
+    (adsQuery.error ? messageFrom(adsQuery.error, "Could not load posted ads.") : "");
 
-      const updated = payload.ad as UserAd;
-      setAds((current) => current.map((item) => (item.id === updated.id ? updated : item)));
-      setStorage(String(payload.storage || storage));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not update ad.");
-    } finally {
-      setWorkingId("");
-    }
+  function refreshAds() {
+    setActionError("");
+    void adsQuery.refetch();
+  }
+
+  function moderate(ad: UserAd, status: UserAd["status"]) {
+    moderateMutation.mutate({ ad, status });
   }
 
   return (
@@ -84,9 +78,10 @@ export function AdminAdsModeration() {
           <button
             type="button"
             className="button-secondary inline-flex min-h-[42px] items-center justify-center gap-2 px-5 text-sm"
-            onClick={() => void loadAds()}
+            onClick={refreshAds}
+            disabled={adsQuery.isFetching}
           >
-            <RefreshCw className="h-4 w-4" />
+            <RefreshCw className={`h-4 w-4 ${adsQuery.isFetching ? "animate-spin" : ""}`} />
             Refresh
           </button>
         </div>
@@ -134,7 +129,7 @@ export function AdminAdsModeration() {
                   <button
                     type="button"
                     className="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-full border border-red-300/20 bg-red-500/10 text-sm font-semibold text-red-100 transition hover:bg-red-500/15 disabled:opacity-60"
-                    onClick={() => void moderate(ad, "Rejected")}
+                    onClick={() => moderate(ad, "Rejected")}
                     disabled={workingId === ad.id}
                   >
                     <Ban className="h-4 w-4" />
@@ -143,7 +138,7 @@ export function AdminAdsModeration() {
                   <button
                     type="button"
                     className="button-hyd-primary inline-flex min-h-[42px] items-center justify-center gap-2 text-sm disabled:opacity-60"
-                    onClick={() => void moderate(ad, "Approved")}
+                    onClick={() => moderate(ad, "Approved")}
                     disabled={workingId === ad.id}
                   >
                     {workingId === ad.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <BadgeCheck className="h-4 w-4" />}

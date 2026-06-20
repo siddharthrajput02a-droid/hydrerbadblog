@@ -1,4 +1,5 @@
 import { randomUUID } from "crypto";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { hyderabadAreas } from "@/data/profiles";
 import { getUserAdStoreMode, readUserAds, writeUserAds } from "@/lib/user-ad-store";
@@ -11,6 +12,12 @@ const categories = ["Dinner Date", "Party Partner", "Travel Companion"] as const
 const statuses: AdStatus[] = ["Pending", "Approved", "Rejected"];
 const fallbackImage =
   "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=1600&q=90";
+const readCacheHeaders = {
+  "Cache-Control": "private, max-age=15, stale-while-revalidate=300"
+};
+const writeCacheHeaders = {
+  "Cache-Control": "no-store"
+};
 
 function text(value: unknown, max = 220) {
   return String(value ?? "").trim().slice(0, max);
@@ -24,13 +31,30 @@ function digits(value: string) {
   return value.replace(/\D/g, "");
 }
 
+function boundedNumber(value: string | null, fallback: number, min: number, max: number) {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) {
+    return fallback;
+  }
+
+  return Math.min(max, Math.max(min, Math.trunc(parsed)));
+}
+
 function bad(message: string, status = 400) {
-  return NextResponse.json({ error: message }, { status });
+  return NextResponse.json({ error: message }, { status, headers: writeCacheHeaders });
+}
+
+function revalidateAdViews() {
+  revalidatePath("/ads");
+  revalidatePath("/my-ads");
+  revalidatePath("/admin/dashboard");
 }
 
 export async function GET(request: NextRequest) {
   const ownerId = text(request.nextUrl.searchParams.get("ownerId"), 100);
   const status = text(request.nextUrl.searchParams.get("status"), 20) as AdStatus;
+  const limit = boundedNumber(request.nextUrl.searchParams.get("limit"), 100, 1, 100);
+  const offset = boundedNumber(request.nextUrl.searchParams.get("offset"), 0, 0, 100000);
   const ads = await readUserAds();
 
   let rows = [...ads];
@@ -42,7 +66,14 @@ export async function GET(request: NextRequest) {
   }
 
   rows.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
-  return NextResponse.json({ ads: rows, storage: getUserAdStoreMode() });
+  const total = rows.length;
+  const page = rows.slice(offset, offset + limit);
+  const nextOffset = offset + page.length < total ? offset + page.length : null;
+
+  return NextResponse.json(
+    { ads: page, storage: getUserAdStoreMode(), total, limit, offset, nextOffset },
+    { headers: readCacheHeaders }
+  );
 }
 
 export async function POST(request: NextRequest) {
@@ -95,5 +126,9 @@ export async function POST(request: NextRequest) {
 
   const ads = await readUserAds();
   await writeUserAds([ad, ...ads]);
-  return NextResponse.json({ ad, storage: getUserAdStoreMode() }, { status: 201 });
+  revalidateAdViews();
+  return NextResponse.json(
+    { ad, storage: getUserAdStoreMode() },
+    { status: 201, headers: writeCacheHeaders }
+  );
 }

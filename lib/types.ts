@@ -1,12 +1,20 @@
 export type Area =
   | "Banjara Hills"
   | "Jubilee Hills"
-  | "Gachibowli"
   | "Hitech City"
+  | "Gachibowli"
   | "Madhapur"
+  | "Kondapur"
   | "Kukatpally"
   | "Begumpet"
-  | "Secunderabad";
+  | "Secunderabad"
+  | "Ameerpet"
+  | "Dilsukhnagar"
+  | "LB Nagar"
+  | "Miyapur"
+  | "Uppal"
+  | "Manikonda"
+  | "Financial District";
 
 export interface Profile {
   id: string;

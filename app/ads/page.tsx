@@ -3,23 +3,40 @@ import Link from "next/link";
 import { Plus, ShieldCheck } from "lucide-react";
 import { UserAdCard } from "@/components/user-ad-card";
 import { getUserAdStoreMode, readUserAds } from "@/lib/user-ad-store";
-import { siteConfig } from "@/lib/utils";
+import { breadcrumbJsonLd, buildMetadata, collectionPageJsonLd, webPageJsonLd } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-export const metadata: Metadata = {
-  title: "Posted Profile Ads",
-  description: "Browse approved Hyderabad profile ads posted through the Next.js backend.",
-  alternates: {
-    canonical: `${siteConfig.url}/ads`
-  }
-};
+export const metadata: Metadata = buildMetadata({
+  title: "Approved Hyderabad Profile Ads",
+  description:
+    "Browse approved Hyderabad adult companion profile ads with direct call, chat, and WhatsApp contact actions.",
+  path: "/ads",
+  keywords: ["Hyderabad posted ads", "approved Hyderabad profiles", "Hyderabad companion ads"]
+});
 
 export default async function AdsPage() {
   const ads = (await readUserAds())
     .filter((ad) => ad.status === "Approved")
     .sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
+  const schemas = [
+    webPageJsonLd({
+      name: "Approved Hyderabad profile ads",
+      description: "Approved user-posted profile ads for Hyderabad.",
+      path: "/ads"
+    }),
+    collectionPageJsonLd({
+      name: "Approved Hyderabad profile ads",
+      description: "Approved user-posted profile ads for Hyderabad.",
+      path: "/ads",
+      itemUrls: ads.map((ad) => `/ads#${ad.id}`)
+    }),
+    breadcrumbJsonLd([
+      { name: "Home", path: "/" },
+      { name: "Posted ads", path: "/ads" }
+    ])
+  ];
 
   return (
     <section className="section-spacing relative overflow-hidden bg-[var(--background)]">
@@ -36,7 +53,7 @@ export default async function AdsPage() {
               Storage: {getUserAdStoreMode() === "vercel-kv" ? "Vercel KV" : "local dev"}
             </p>
           </div>
-          <Link href="/post-ad" className="button-hyd-primary inline-flex min-h-[48px] items-center justify-center gap-2 px-7 text-sm">
+          <Link href="/post-ad" rel="nofollow" className="button-hyd-primary inline-flex min-h-[48px] items-center justify-center gap-2 px-7 text-sm">
             <Plus className="h-4 w-4" />
             Post ad
           </Link>
@@ -52,11 +69,11 @@ export default async function AdsPage() {
               New profile ads appear here after admin approval. You can still post and track your own card in My Ads.
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <Link href="/post-ad" className="button-hyd-primary inline-flex min-h-[46px] items-center gap-2 px-7 text-sm">
+              <Link href="/post-ad" rel="nofollow" className="button-hyd-primary inline-flex min-h-[46px] items-center gap-2 px-7 text-sm">
                 <Plus className="h-4 w-4" />
                 Post ad
               </Link>
-              <Link href="/my-ads" className="button-hyd-secondary inline-flex min-h-[46px] items-center px-7 text-sm">
+              <Link href="/my-ads" rel="nofollow" className="button-hyd-secondary inline-flex min-h-[46px] items-center px-7 text-sm">
                 My Ads
               </Link>
             </div>
@@ -69,6 +86,7 @@ export default async function AdsPage() {
           </div>
         )}
       </div>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }} />
     </section>
   );
 }

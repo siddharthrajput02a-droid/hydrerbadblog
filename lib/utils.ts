@@ -1,18 +1,28 @@
 import { hyderabadAreas, profiles } from "@/data/profiles";
+import { areaSeoCopy } from "@/data/hyderabad-seo";
 import { Area, Profile } from "@/lib/types";
 
 export const HYDERABAD_CITY = "Hyderabad";
 
+function normalizeSiteUrl(value: string | undefined) {
+  return (value || "https://hyderabad-afterglow.com").replace(/\/$/, "");
+}
+
 export const siteConfig = {
   name: "Hyderabad Afterglow",
-  url: "https://example.com",
-  titleHome: "Premium Hyderabad Escort & Dating | Verified Profiles",
+  url: normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL),
+  titleHome: "Hyderabad Escort & Companion Directory | Verified 18+ Profiles",
   description:
-    "A Hyderabad-only premium dating, nightlife, and companion discovery frontend with refined profiles, local area pages, and SEO-first browsing."
+    "Explore a Hyderabad-only adult companion directory with verified 18+ profiles, local area pages, privacy-focused browsing, and SEO-ready city coverage."
 };
 
 export function slugifyArea(area: string) {
-  return area.toLowerCase().replace(/\s+/g, "-");
+  return area
+    .toLowerCase()
+    .trim()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 export function getAreaLabel(areaSlug: string): Area | undefined {
@@ -40,9 +50,18 @@ export function currency(amount: number) {
 }
 
 export function areaSeo(area: Area) {
+  const copy = areaSeoCopy[area];
+
   return {
-    title: `${area} Dating & Nightlife | Hyderabad Afterglow`,
-    description: `Explore Hyderabad dating, nightlife partners, and premium companion discovery in ${area}. Browse elegant profiles, classy bios, and local area pages.`,
-    canonical: `${siteConfig.url}/hyderabad/${slugifyArea(area)}`
+    title: `${area} Escort & Companion Profiles in Hyderabad`,
+    description: `${copy.intro} Browse verified 18+ companion profiles, local links, FAQs, and privacy-focused contact options for ${area}, Hyderabad.`,
+    canonical: `${siteConfig.url}/hyderabad/${slugifyArea(area)}`,
+    keywords: [
+      `${area} escorts`,
+      `${area} companion profiles`,
+      `${area} Hyderabad dating`,
+      `${area} call girl directory`,
+      `verified profiles ${area}`
+    ]
   };
 }

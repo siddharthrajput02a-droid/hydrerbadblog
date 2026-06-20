@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
@@ -15,13 +12,7 @@ export function HomeCta() {
       <div className="pointer-events-none absolute -right-24 bottom-0 h-[320px] w-[320px] rounded-full bg-[radial-gradient(circle,rgba(201,162,77,0.08),transparent_65%)] blur-3xl" />
 
       <div className="container-shell relative z-[1]">
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          className="relative overflow-hidden rounded-[2.25rem] border border-white/[0.08] bg-white/[0.04] p-10 shadow-[0_32px_100px_rgba(0,0,0,0.45)] backdrop-blur-xl md:p-14"
-        >
+        <div className="relative overflow-hidden rounded-[2.25rem] border border-white/[0.08] bg-white/[0.04] p-10 shadow-[0_32px_100px_rgba(0,0,0,0.45)] backdrop-blur-xl md:p-14">
           <div className="pointer-events-none absolute -right-24 -top-28 h-80 w-80 rounded-full bg-[radial-gradient(circle,rgba(255,77,141,0.14),transparent_70%)] blur-3xl" />
           <div className="pointer-events-none absolute -bottom-32 -left-20 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(201,162,77,0.1),transparent_72%)] blur-3xl" />
 
@@ -63,7 +54,7 @@ export function HomeCta() {
               </Link>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

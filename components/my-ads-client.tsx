@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BadgeCheck,
   Clock,
@@ -14,6 +15,13 @@ import {
   Trash2
 } from "lucide-react";
 import { hyderabadAreas } from "@/data/profiles";
+import {
+  adQueryKeys,
+  deleteAd,
+  fetchAds,
+  updateAd,
+  type AdsResponse
+} from "@/lib/ad-api-client";
 import { getAdOwnerId } from "@/lib/ad-owner";
 import type { UserAd } from "@/lib/types";
 import { UserAdCard } from "@/components/user-ad-card";
@@ -38,16 +46,16 @@ function formFromAd(ad: UserAd) {
   };
 }
 
+function messageFrom(error: unknown, fallback: string) {
+  return error instanceof Error ? error.message : fallback;
+}
+
 export function MyAdsClient() {
+  const queryClient = useQueryClient();
   const [ownerId, setOwnerId] = useState("");
-  const [ads, setAds] = useState<UserAd[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [deleting, setDeleting] = useState("");
-  const [storage, setStorage] = useState("");
+  const [actionError, setActionError] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("All");
   const [editingId, setEditingId] = useState("");
-  const [savingEdit, setSavingEdit] = useState(false);
   const [editForm, setEditForm] = useState({
     title: "",
     name: "",
@@ -61,30 +69,59 @@ export function MyAdsClient() {
     description: ""
   });
 
-  const loadAds = useCallback(async () => {
-    const owner = getAdOwnerId();
-    setOwnerId(owner);
-    setLoading(true);
-    setError("");
-
-    try {
-      const response = await fetch(`/api/ads?ownerId=${encodeURIComponent(owner)}`, { cache: "no-store" });
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        throw new Error(payload.error || "Could not load ads.");
-      }
-      setAds(Array.isArray(payload.ads) ? payload.ads : []);
-      setStorage(String(payload.storage || ""));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not load ads.");
-    } finally {
-      setLoading(false);
-    }
+  useEffect(() => {
+    setOwnerId(getAdOwnerId());
   }, []);
 
-  useEffect(() => {
-    void loadAds();
-  }, [loadAds]);
+  const ownerQueryKey = ownerId ? adQueryKeys.owner(ownerId) : adQueryKeys.owner("pending-owner");
+  const adsQuery = useQuery({
+    queryKey: ownerQueryKey,
+    queryFn: () => fetchAds({ ownerId }),
+    enabled: Boolean(ownerId)
+  });
+
+  const ads = adsQuery.data?.ads ?? [];
+  const storage = adsQuery.data?.storage ?? "";
+
+  function setOwnerAds(updater: (current: UserAd[]) => UserAd[], nextStorage?: string) {
+    if (!ownerId) {
+      return;
+    }
+
+    queryClient.setQueryData<AdsResponse>(adQueryKeys.owner(ownerId), (current) => ({
+      ads: updater(current?.ads ?? []),
+      storage: nextStorage ?? current?.storage ?? storage
+    }));
+  }
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => deleteAd(id, ownerId),
+    onMutate: () => setActionError(""),
+    onSuccess: (payload, id) => {
+      setOwnerAds((current) => current.filter((ad) => ad.id !== id), payload.storage);
+      void queryClient.invalidateQueries({ queryKey: adQueryKeys.all });
+    },
+    onError: (error) => setActionError(messageFrom(error, "Could not delete ad."))
+  });
+
+  const editMutation = useMutation({
+    mutationFn: () =>
+      updateAd(editingId, {
+        ...editForm,
+        ownerId
+      }),
+    onMutate: () => setActionError(""),
+    onSuccess: (payload) => {
+      const updated = payload.ad;
+      setOwnerAds(
+        (current) => current.map((ad) => (ad.id === updated.id ? updated : ad)),
+        payload.storage
+      );
+      setEditingId("");
+      void queryClient.invalidateQueries({ queryKey: adQueryKeys.all });
+    },
+    onError: (error) => setActionError(messageFrom(error, "Could not update ad."))
+  });
 
   const stats = useMemo(
     () => ({
@@ -103,62 +140,26 @@ export function MyAdsClient() {
     return ads.filter((ad) => ad.status === statusFilter);
   }, [ads, statusFilter]);
 
-  async function deleteAd(id: string) {
-    setDeleting(id);
-    setError("");
+  const loading = !ownerId || (adsQuery.isPending && !adsQuery.data);
+  const deletingId = deleteMutation.isPending ? deleteMutation.variables ?? "" : "";
+  const error =
+    actionError ||
+    (adsQuery.error ? messageFrom(adsQuery.error, "Could not load ads.") : "");
 
-    try {
-      const response = await fetch(`/api/ads/${id}?ownerId=${encodeURIComponent(ownerId)}`, {
-        method: "DELETE"
-      });
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        throw new Error(payload.error || "Could not delete ad.");
-      }
-      setAds((current) => current.filter((ad) => ad.id !== id));
-      setStorage(String(payload.storage || storage));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not delete ad.");
-    } finally {
-      setDeleting("");
-    }
+  function refreshAds() {
+    setActionError("");
+    void adsQuery.refetch();
   }
 
   function startEdit(ad: UserAd) {
     setEditingId(ad.id);
     setEditForm(formFromAd(ad));
-    setError("");
+    setActionError("");
   }
 
-  async function saveEdit() {
-    if (!editingId) return;
-
-    setSavingEdit(true);
-    setError("");
-
-    try {
-      const response = await fetch(`/api/ads/${editingId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...editForm,
-          ownerId
-        })
-      });
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        throw new Error(payload.error || "Could not update ad.");
-      }
-
-      const updated = payload.ad as UserAd;
-      setAds((current) => current.map((ad) => (ad.id === updated.id ? updated : ad)));
-      setStorage(String(payload.storage || storage));
-      setEditingId("");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not update ad.");
-    } finally {
-      setSavingEdit(false);
-    }
+  function saveEdit() {
+    if (!editingId || !ownerId) return;
+    editMutation.mutate();
   }
 
   return (
@@ -200,9 +201,10 @@ export function MyAdsClient() {
           <button
             type="button"
             className="button-hyd-secondary inline-flex min-h-[44px] items-center gap-2 text-sm"
-            onClick={() => void loadAds()}
+            onClick={refreshAds}
+            disabled={adsQuery.isFetching}
           >
-            <RefreshCw className="h-4 w-4" />
+            <RefreshCw className={`h-4 w-4 ${adsQuery.isFetching ? "animate-spin" : ""}`} />
             Refresh
           </button>
           <Link href="/post-ad" className="button-hyd-primary inline-flex min-h-[44px] items-center gap-2 text-sm">
@@ -346,10 +348,10 @@ export function MyAdsClient() {
           <button
             type="button"
             className="button-hyd-primary mt-4 inline-flex min-h-[48px] w-full items-center justify-center gap-2 text-sm disabled:opacity-60"
-            onClick={() => void saveEdit()}
-            disabled={savingEdit}
+            onClick={saveEdit}
+            disabled={editMutation.isPending}
           >
-            {savingEdit ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+            {editMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
             Save changes
           </button>
         </div>
@@ -401,10 +403,10 @@ export function MyAdsClient() {
                   <button
                     type="button"
                     className="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-full border border-red-300/20 bg-red-500/10 text-sm font-semibold text-red-100 transition hover:bg-red-500/15 disabled:opacity-60"
-                    onClick={() => void deleteAd(ad.id)}
-                    disabled={deleting === ad.id}
+                    onClick={() => deleteMutation.mutate(ad.id)}
+                    disabled={deletingId === ad.id}
                   >
-                    {deleting === ad.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                    {deletingId === ad.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
                     Delete
                   </button>
                 </div>

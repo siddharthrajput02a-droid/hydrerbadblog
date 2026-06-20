@@ -275,7 +275,13 @@ export function MarketingSections({ featured }: { featured: Profile[] }) {
                 {featured.slice(0, 3).map((p) => (
                   <div key={p.id} className="rounded-2xl border border-[#ffe4f0] bg-white/90 p-4 shadow-[0_16px_48px_rgba(255,77,141,0.1)] ring-1 ring-white/80">
                     <div className="relative mb-3 aspect-[3/4] overflow-hidden rounded-xl">
-                      <Image src={p.image} alt="" fill className="object-cover" sizes="200px" />
+                      <Image
+                        src={p.image}
+                        alt={`${p.name} in ${p.area}, Hyderabad`}
+                        fill
+                        className="object-cover"
+                        sizes="200px"
+                      />
                     </div>
                     <p className="headline-display text-lg font-semibold text-[#2a1520]">{p.name}</p>
                     <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[#6b5060]">{p.area}</p>

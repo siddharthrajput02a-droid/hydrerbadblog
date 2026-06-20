@@ -91,7 +91,7 @@ export function SearchOverlay({ open, onClose }: Props) {
                 autoFocus
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Search by name, area, mood…"
+                placeholder="Search by name, area, mood..."
                 className="min-w-0 flex-1 bg-transparent text-lg text-[var(--foreground)] outline-none placeholder:text-[var(--muted-deep)]"
               />
               {loading ? <Loader2 className="h-5 w-5 shrink-0 animate-spin text-[var(--accent)]" aria-hidden /> : null}
@@ -122,12 +122,12 @@ export function SearchOverlay({ open, onClose }: Props) {
                       className="group flex items-center gap-3 rounded-2xl px-2 py-2.5 transition hover:bg-white/[0.04]"
                     >
                       <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl ring-1 ring-[rgba(212,175,55,0.25)]">
-                        <Image src={p.image} alt="" fill className="object-cover" sizes="56px" />
+                        <Image src={p.image} alt={`${p.name} in ${p.area}, Hyderabad`} fill className="object-cover" sizes="56px" />
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="truncate font-medium tracking-tight text-[var(--foreground)]">
                           {p.name}
-                          <span className="font-normal text-[var(--muted)]"> · {p.area}</span>
+                          <span className="font-normal text-[var(--muted)]"> / {p.area}</span>
                         </div>
                         <div className="mt-0.5 truncate text-xs text-[var(--muted)]">{p.tagline}</div>
                       </div>

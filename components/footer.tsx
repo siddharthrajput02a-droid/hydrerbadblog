@@ -5,11 +5,12 @@ import { slugifyArea } from "@/lib/utils";
 
 const quickLinks = [
   { label: "All Hyderabad profiles", href: "/hyderabad" },
-  { label: "Posted ads",           href: "/ads"        },
-  { label: "Post profile ad",       href: "/post-ad"    },
-  { label: "My ads",                href: "/my-ads"     },
-  { label: "Member login",           href: "/login"      },
-  { label: "Admin panel",            href: "/admin"      },
+  { label: "Posted ads", href: "/ads" },
+  { label: "Banjara Hills", href: "/hyderabad/banjara-hills" },
+  { label: "Hitech City", href: "/hyderabad/hitech-city" },
+  { label: "Gachibowli", href: "/hyderabad/gachibowli" },
+  { label: "Financial District", href: "/hyderabad/financial-district" },
+  { label: "AI discovery", href: "/llm-discovery" }
 ];
 
 export function Footer() {
@@ -29,7 +30,7 @@ export function Footer() {
               Hyderabad Directory
             </p>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/40">
-              Premium escort &amp; call girl directory for Hyderabad. Verified profiles, all areas, complete discretion.
+              Hyderabad adult companion directory with verified 18+ profiles, local area pages, and privacy-focused browsing.
             </p>
           </div>
 
@@ -38,7 +39,7 @@ export function Footer() {
             <h4 className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-white/30">Areas</h4>
             <ul className="mt-4 space-y-2">
               <li><Link href="/hyderabad" className="text-sm text-white/50 transition hover:text-[#ff4d8d]">All Hyderabad</Link></li>
-              {hyderabadAreas.slice(0, 4).map((area) => (
+              {hyderabadAreas.slice(0, 8).map((area) => (
                 <li key={area}><Link href={`/hyderabad/${slugifyArea(area)}`} className="text-sm text-white/50 transition hover:text-[#ff4d8d]">{area}</Link></li>
               ))}
             </ul>
@@ -47,7 +48,7 @@ export function Footer() {
           <div>
             <h4 className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-white/30 md:invisible">Areas</h4>
             <ul className="mt-4 space-y-2">
-              {hyderabadAreas.slice(4).map((area) => (
+              {hyderabadAreas.slice(8).map((area) => (
                 <li key={area}><Link href={`/hyderabad/${slugifyArea(area)}`} className="text-sm text-white/50 transition hover:text-[#ff4d8d]">{area}</Link></li>
               ))}
             </ul>
@@ -65,10 +66,9 @@ export function Footer() {
 
         </div>
 
-        {/* bottom bar */}
         <div className="mt-8 flex flex-col items-center justify-between gap-3 border-t border-white/[0.06] pt-6 sm:flex-row">
-          <p className="text-xs text-white/25">© {new Date().getFullYear()} Hyderabad Afterglow. All rights reserved.</p>
-          <p className="text-xs text-white/20">For adults 18+ only · All profiles are independently verified</p>
+          <p className="text-xs text-white/25">(c) {new Date().getFullYear()} Hyderabad Afterglow. All rights reserved.</p>
+          <p className="text-xs text-white/20">For adults 18+ only - All profiles are independently verified</p>
         </div>
       </div>
     </footer>

@@ -1,27 +1,49 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Menu, PlusCircle, Search, X } from "lucide-react";
-import { SearchOverlay } from "@/components/search-overlay";
+
+const SearchOverlay = dynamic(
+  () => import("@/components/search-overlay").then((mod) => mod.SearchOverlay),
+  { ssr: false, loading: () => null }
+);
 
 const navItems = [
   { href: "/", label: "Lounge" },
   { href: "/hyderabad", label: "Hyderabad" },
   { href: "/ads", label: "Posted Ads" },
-  { href: "/post-ad", label: "Post Ad" },
-  { href: "/my-ads", label: "My Ads" },
-  { href: "/admin/dashboard", label: "House" },
-  { href: "/login", label: "Enter" }
+  { href: "/post-ad", label: "Post Ad", private: true },
+  { href: "/my-ads", label: "My Ads", private: true },
+  { href: "/admin/dashboard", label: "House", private: true },
+  { href: "/login", label: "Enter", private: true }
 ];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const scrolledRef = useRef(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 16);
+    let ticking = false;
+    const updateScrolled = () => {
+      ticking = false;
+      const next = window.scrollY > 16;
+      if (next === scrolledRef.current) {
+        return;
+      }
+      scrolledRef.current = next;
+      setScrolled(next);
+    };
+    const onScroll = () => {
+      if (ticking) {
+        return;
+      }
+      ticking = true;
+      window.requestAnimationFrame(updateScrolled);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -49,7 +71,12 @@ export function Navbar() {
 
           <nav className="hidden items-center gap-8 text-sm text-[var(--muted)] md:flex">
             {navItems.map((item) => (
-              <Link key={item.href} href={item.href} className="nav-link transition-colors hover:text-[var(--foreground)]">
+              <Link
+                key={item.href}
+                href={item.href}
+                rel={item.private ? "nofollow" : undefined}
+                className="nav-link transition-colors hover:text-[var(--foreground)]"
+              >
                 {item.label}
               </Link>
             ))}
@@ -101,6 +128,7 @@ export function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
+                  rel={item.private ? "nofollow" : undefined}
                   className="rounded-xl px-3 py-3 text-base transition hover:bg-white/[0.05]"
                   onClick={() => setOpen(false)}
                 >

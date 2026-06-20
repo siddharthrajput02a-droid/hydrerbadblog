@@ -1,23 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { PwaRegister } from "@/components/pwa-register";
 import { siteConfig } from "@/lib/utils";
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
-  display: "swap"
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap"
-});
 
 export const metadata: Metadata = {
   applicationName: siteConfig.name,
@@ -40,6 +27,39 @@ export const metadata: Metadata = {
     "Hitech City",
     "premium dating Hyderabad"
   ],
+  openGraph: {
+    title: siteConfig.titleHome,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    locale: "en_IN",
+    type: "website",
+    images: [
+      {
+        url: "/icons/icon-512.png",
+        width: 512,
+        height: 512,
+        alt: `${siteConfig.name} Hyderabad directory`
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.titleHome,
+    description: siteConfig.description,
+    images: ["/icons/icon-512.png"]
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1
+    }
+  },
   manifest: "/manifest.webmanifest",
   icons: {
     icon: [
@@ -71,8 +91,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-      <body className={`${inter.className} bg-[var(--background)] text-[var(--foreground)] antialiased`}>
+    <html lang="en">
+      <body className="bg-[var(--background)] text-[var(--foreground)] antialiased">
         <Navbar />
         <main>{children}</main>
         <Footer />

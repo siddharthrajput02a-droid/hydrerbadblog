@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { AdPostForm } from "@/components/ad-post-form";
-import { siteConfig } from "@/lib/utils";
+import { QueryProvider } from "@/components/query-provider";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Post Profile Ad",
   description: "Post a Hyderabad profile ad with call, chat, and WhatsApp contact actions.",
-  alternates: {
-    canonical: `${siteConfig.url}/post-ad`
-  }
-};
+  path: "/post-ad",
+  noIndex: true
+});
 
 export default function PostAdPage() {
   return (
@@ -22,7 +22,9 @@ export default function PostAdPage() {
             Build a public-style ad card with direct call, chat, and WhatsApp routes.
           </p>
         </div>
-        <AdPostForm />
+        <QueryProvider>
+          <AdPostForm />
+        </QueryProvider>
       </div>
     </section>
   );

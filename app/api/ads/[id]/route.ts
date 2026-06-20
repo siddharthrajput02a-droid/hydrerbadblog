@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { hyderabadAreas } from "@/data/profiles";
 import { getUserAdStoreMode, readUserAds, writeUserAds } from "@/lib/user-ad-store";
@@ -8,6 +9,9 @@ export const runtime = "nodejs";
 
 const categories = ["Dinner Date", "Party Partner", "Travel Companion"] as const;
 const statuses: AdStatus[] = ["Pending", "Approved", "Rejected"];
+const writeCacheHeaders = {
+  "Cache-Control": "no-store"
+};
 
 function text(value: unknown, max = 220) {
   return String(value ?? "").trim().slice(0, max);
@@ -22,7 +26,13 @@ function digits(value: string) {
 }
 
 function bad(message: string, status = 400) {
-  return NextResponse.json({ error: message }, { status });
+  return NextResponse.json({ error: message }, { status, headers: writeCacheHeaders });
+}
+
+function revalidateAdViews() {
+  revalidatePath("/ads");
+  revalidatePath("/my-ads");
+  revalidatePath("/admin/dashboard");
 }
 
 function canModerate(request: NextRequest) {
@@ -86,7 +96,10 @@ export async function PATCH(
   const ads = await readUserAds();
   const index = ads.findIndex((item) => item.id === id);
   if (index === -1) {
-    return NextResponse.json({ error: "Ad not found." }, { status: 404 });
+    return NextResponse.json(
+      { error: "Ad not found." },
+      { status: 404, headers: writeCacheHeaders }
+    );
   }
 
   const current = ads[index];
@@ -95,7 +108,10 @@ export async function PATCH(
 
   if (statuses.includes(status)) {
     if (!canModerate(request)) {
-      return NextResponse.json({ error: "Admin PIN is required." }, { status: 401 });
+      return NextResponse.json(
+        { error: "Admin PIN is required." },
+        { status: 401, headers: writeCacheHeaders }
+      );
     }
 
     ads[index] = {
@@ -104,7 +120,11 @@ export async function PATCH(
       updatedAt: new Date().toISOString()
     };
     await writeUserAds(ads);
-    return NextResponse.json({ ad: ads[index], storage: getUserAdStoreMode() });
+    revalidateAdViews();
+    return NextResponse.json(
+      { ad: ads[index], storage: getUserAdStoreMode() },
+      { headers: writeCacheHeaders }
+    );
   }
 
   const ownerId = text(payload.ownerId, 100);
@@ -112,7 +132,10 @@ export async function PATCH(
     return bad("Missing owner.");
   }
   if (current.ownerId !== ownerId) {
-    return NextResponse.json({ error: "You can only edit your own ads." }, { status: 403 });
+    return NextResponse.json(
+      { error: "You can only edit your own ads." },
+      { status: 403, headers: writeCacheHeaders }
+    );
   }
 
   const updated = applyEditableFields(current, payload);
@@ -122,7 +145,11 @@ export async function PATCH(
 
   ads[index] = updated;
   await writeUserAds(ads);
-  return NextResponse.json({ ad: updated, storage: getUserAdStoreMode() });
+  revalidateAdViews();
+  return NextResponse.json(
+    { ad: updated, storage: getUserAdStoreMode() },
+    { headers: writeCacheHeaders }
+  );
 }
 
 export async function DELETE(
@@ -133,20 +160,33 @@ export async function DELETE(
   const ownerId = String(request.nextUrl.searchParams.get("ownerId") ?? "").trim();
 
   if (!ownerId) {
-    return NextResponse.json({ error: "Missing owner." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Missing owner." },
+      { status: 400, headers: writeCacheHeaders }
+    );
   }
 
   const ads = await readUserAds();
   const ad = ads.find((item) => item.id === id);
 
   if (!ad) {
-    return NextResponse.json({ error: "Ad not found." }, { status: 404 });
+    return NextResponse.json(
+      { error: "Ad not found." },
+      { status: 404, headers: writeCacheHeaders }
+    );
   }
 
   if (ad.ownerId !== ownerId) {
-    return NextResponse.json({ error: "You can only delete your own ads." }, { status: 403 });
+    return NextResponse.json(
+      { error: "You can only delete your own ads." },
+      { status: 403, headers: writeCacheHeaders }
+    );
   }
 
   await writeUserAds(ads.filter((item) => item.id !== id));
-  return NextResponse.json({ ok: true, storage: getUserAdStoreMode() });
+  revalidateAdViews();
+  return NextResponse.json(
+    { ok: true, storage: getUserAdStoreMode() },
+    { headers: writeCacheHeaders }
+  );
 }

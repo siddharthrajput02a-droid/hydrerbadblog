@@ -1,8 +1,5 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import {
   ArrowRight,
   BadgeCheck,
@@ -12,8 +9,6 @@ import {
   Send,
   Star
 } from "lucide-react";
-import type { MouseEvent } from "react";
-import { useRef } from "react";
 import type { Profile } from "@/lib/types";
 import { currency } from "@/lib/utils";
 
@@ -63,28 +58,11 @@ function ProfileContactActions({ profile, tone }: { profile: Profile; tone: Prof
 }
 
 function ProfileCardMidnight({ profile }: { profile: Profile }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const mx = useMotionValue(50);
-  const my = useMotionValue(20);
-  const spotlight = useMotionTemplate`radial-gradient(520px circle at ${mx}% ${my}%, rgba(255,255,255,0.14), transparent 55%)`;
-
-  const onMove = (e: MouseEvent<HTMLDivElement>) => {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    mx.set(((e.clientX - r.left) / r.width) * 100);
-    my.set(((e.clientY - r.top) / r.height) * 100);
-  };
-
   return (
     <article
-      ref={ref}
-      onMouseMove={onMove}
       className="group relative overflow-hidden rounded-[1.35rem] border border-[rgba(212,175,55,0.22)] bg-[linear-gradient(165deg,rgba(22,18,26,0.92),rgba(8,6,10,0.78))] shadow-[0_28px_90px_rgba(0,0,0,0.55)] ring-1 ring-white/[0.04] transition duration-500 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:border-[rgba(236,72,153,0.38)] hover:shadow-[0_40px_120px_rgba(92,26,46,0.42)]"
     >
-      <span className="pointer-events-none absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100">
-        <motion.span style={{ background: spotlight }} className="absolute inset-0" />
-      </span>
+      <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(520px_circle_at_50%_20%,rgba(255,255,255,0.1),transparent_55%)] opacity-0 transition duration-500 group-hover:opacity-100" />
 
       <span className="pointer-events-none absolute -left-[40%] top-0 h-full w-[45%] rotate-12 bg-gradient-to-r from-transparent via-white/12 to-transparent opacity-0 blur-md transition duration-700 group-hover:translate-x-[220%] group-hover:opacity-100" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(212,175,55,0.55)] to-transparent opacity-70" />
@@ -95,7 +73,7 @@ function ProfileCardMidnight({ profile }: { profile: Profile }) {
       >
         <Image
           src={profile.image}
-          alt={`${profile.name} in ${profile.area}`}
+          alt={`${profile.name} in ${profile.area}, Hyderabad`}
           fill
           className="object-cover transition duration-[1.05s] ease-out group-hover:scale-[1.07]"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 28vw"

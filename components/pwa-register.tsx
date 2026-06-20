@@ -4,12 +4,15 @@ import { useEffect } from "react";
 
 export function PwaRegister() {
   useEffect(() => {
-    if (process.env.NODE_ENV !== "production" || !("serviceWorker" in navigator)) {
+    if (!("serviceWorker" in navigator)) {
       return;
     }
 
     const registerServiceWorker = () => {
-      void navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => undefined);
+      void navigator.serviceWorker
+        .register("/sw.js", { scope: "/" })
+        .then((registration) => registration.update())
+        .catch(() => undefined);
     };
 
     if (document.readyState === "complete") {

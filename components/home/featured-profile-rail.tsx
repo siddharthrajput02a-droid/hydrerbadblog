@@ -50,7 +50,7 @@ function LuxuryCarouselCard({ profile, tone }: { profile: Profile; tone: RailTon
       <div className="relative aspect-[4/5] w-full overflow-hidden">
         <Image
           src={profile.image}
-          alt={`${profile.name}`}
+          alt={`${profile.name} in ${profile.area}, Hyderabad`}
           fill
           className="object-cover transition duration-[1.1s] ease-out group-hover:scale-[1.07]"
           sizes="300px"

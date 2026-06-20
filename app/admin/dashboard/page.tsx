@@ -3,13 +3,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { BadgeCheck, CalendarClock, Clock3, ShieldCheck, UserRoundCheck } from "lucide-react";
 import { AdminAdsModeration } from "@/components/admin-ads-moderation";
+import { QueryProvider } from "@/components/query-provider";
 import { profiles } from "@/data/profiles";
+import { buildMetadata } from "@/lib/seo";
 import { currency } from "@/lib/utils";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Admin Dashboard",
-  description: "Moderation, booking requests, and profile quality controls for the Hyderabad directory."
-};
+  description: "Moderation, booking requests, and profile quality controls for the Hyderabad directory.",
+  path: "/admin/dashboard",
+  noIndex: true
+});
 
 const queue = profiles.slice(0, 6).map((profile, index) => ({
   profile,
@@ -61,7 +65,9 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="mt-8">
-          <AdminAdsModeration />
+          <QueryProvider>
+            <AdminAdsModeration />
+          </QueryProvider>
         </div>
 
         <div className="mt-8 grid gap-8 xl:grid-cols-[1fr,360px]">

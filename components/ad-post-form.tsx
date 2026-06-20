@@ -3,6 +3,7 @@
 import Link from "next/link";
 import type { FormEvent } from "react";
 import { useMemo, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   BadgeCheck,
   Camera,
@@ -17,6 +18,7 @@ import {
   Sparkles
 } from "lucide-react";
 import { hyderabadAreas } from "@/data/profiles";
+import { adQueryKeys, createAd, type AdsResponse } from "@/lib/ad-api-client";
 import { getAdOwnerId } from "@/lib/ad-owner";
 import type { UserAd } from "@/lib/types";
 
@@ -41,11 +43,11 @@ function emptyForm() {
 }
 
 export function AdPostForm() {
+  const queryClient = useQueryClient();
   const [form, setForm] = useState(emptyForm);
   const [created, setCreated] = useState<UserAd | null>(null);
   const [storage, setStorage] = useState("");
   const [error, setError] = useState("");
-  const [submitting, setSubmitting] = useState(false);
 
   const completion = useMemo(() => {
     const fields = [
@@ -63,35 +65,35 @@ export function AdPostForm() {
     return Math.round((fields.filter(Boolean).length / fields.length) * 100);
   }, [form]);
 
-  async function submitAd(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setSubmitting(true);
-    setError("");
-    setCreated(null);
-
-    try {
-      const response = await fetch("/api/ads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          ownerId: getAdOwnerId()
-        })
-      });
-      const payload = await response.json().catch(() => ({}));
-
-      if (!response.ok) {
-        throw new Error(payload.error || "Ad could not be posted.");
-      }
-
-      setCreated(payload.ad as UserAd);
+  const createMutation = useMutation({
+    mutationFn: (payload: ReturnType<typeof emptyForm>) =>
+      createAd({
+        ...payload,
+        ownerId: getAdOwnerId()
+      }),
+    onMutate: () => {
+      setError("");
+      setCreated(null);
+    },
+    onSuccess: (payload) => {
+      const ad = payload.ad;
+      setCreated(ad);
       setStorage(String(payload.storage || ""));
       setForm(emptyForm());
-    } catch (err) {
+      queryClient.setQueryData<AdsResponse>(adQueryKeys.owner(ad.ownerId), (current) => ({
+        ads: [ad, ...(current?.ads ?? []).filter((item) => item.id !== ad.id)],
+        storage: payload.storage || current?.storage || ""
+      }));
+      void queryClient.invalidateQueries({ queryKey: adQueryKeys.all });
+    },
+    onError: (err) => {
       setError(err instanceof Error ? err.message : "Ad could not be posted.");
-    } finally {
-      setSubmitting(false);
     }
+  });
+
+  function submitAd(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    createMutation.mutate({ ...form });
   }
 
   return (
@@ -163,6 +165,8 @@ export function AdPostForm() {
             <img
               src={form.image || fallbackImage}
               alt=""
+              loading="lazy"
+              decoding="async"
               className="h-full w-full object-cover opacity-90"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
@@ -317,7 +321,13 @@ export function AdPostForm() {
           </label>
           <div className="hidden overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.04] md:block">
             {form.image ? (
-              <img src={form.image} alt="" className="h-full min-h-[4.9rem] w-full object-cover" />
+              <img
+                src={form.image}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                className="h-full min-h-[4.9rem] w-full object-cover"
+              />
             ) : (
               <div className="flex h-full min-h-[4.9rem] items-center justify-center text-xs uppercase tracking-[0.16em] text-[var(--muted)]">
                 Preview
@@ -355,9 +365,9 @@ export function AdPostForm() {
         <button
           className="button-hyd-primary mt-5 inline-flex min-h-[52px] w-full items-center justify-center gap-2 text-base disabled:cursor-not-allowed disabled:opacity-60"
           type="submit"
-          disabled={submitting}
+          disabled={createMutation.isPending}
         >
-          {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+          {createMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
           Post ad
         </button>
       </form>

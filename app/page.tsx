@@ -7,15 +7,23 @@ import { HomeHyderabadShell } from "@/components/home/home-hyderabad-shell";
 import { HomeSearchBar } from "@/components/home/home-search-bar";
 import { LocalSeoHyderabad } from "@/components/home/local-seo-hyderabad";
 import { MobileLoungeFab } from "@/components/mobile-lounge-fab";
+import { cityFaqs } from "@/data/hyderabad-seo";
 import { getCategories, getCities, getProfiles } from "@/lib/api";
+import {
+  breadcrumbJsonLd,
+  buildMetadata,
+  faqJsonLd,
+  localBusinessJsonLd,
+  organizationJsonLd,
+  webPageJsonLd,
+  websiteJsonLd
+} from "@/lib/seo";
 import { HYDERABAD_CITY, siteConfig } from "@/lib/utils";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: siteConfig.titleHome,
   description: siteConfig.description,
-  alternates: {
-    canonical: siteConfig.url
-  },
+  path: "/",
   keywords: [
     "Hyderabad escort",
     "Hyderabad dating",
@@ -25,22 +33,27 @@ export const metadata: Metadata = {
     "Hitech City",
     "premium dating Hyderabad"
   ]
-};
+});
 
 export default async function HomePage() {
   const [featuredProfiles, categories, cities] = await Promise.all([
-    getProfiles({ city: HYDERABAD_CITY, limit: 12 }),
+    getProfiles({ city: HYDERABAD_CITY, limit: 8 }),
     getCategories(),
     getCities()
   ]);
 
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: siteConfig.name,
-    description: siteConfig.description,
-    url: siteConfig.url
-  };
+  const schemas = [
+    organizationJsonLd(),
+    websiteJsonLd(),
+    webPageJsonLd({
+      name: siteConfig.titleHome,
+      description: siteConfig.description,
+      path: "/"
+    }),
+    localBusinessJsonLd(),
+    faqJsonLd(cityFaqs),
+    breadcrumbJsonLd([{ name: "Home", path: "/" }])
+  ];
 
   return (
     <HomeHyderabadShell>
@@ -51,7 +64,7 @@ export default async function HomePage() {
       <HomeCta />
       <LocalSeoHyderabad />
       <MobileLoungeFab />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }} />
     </HomeHyderabadShell>
   );
 }
